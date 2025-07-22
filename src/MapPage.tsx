@@ -125,8 +125,6 @@ const MapPage: React.FC = () => {
             });
 
             // 2. BUILD COLOR MAP FOR STATIONS
-            // This map is used to color the station "outlines".
-            // It maps a line name (e.g., "Tsuen Wan Line") to a color (e.g., "#ED1D24").
             const lineColorMap: Record<string, string> = {};
             if (mtrRoutes && mtrRoutes.features) {
               for (const feature of mtrRoutes.features) {
@@ -140,26 +138,23 @@ const MapPage: React.FC = () => {
               }
             }
 
-            // 3. CREATE MAPLIBRE EXPRESSIONS
+            // 3. CREATE MAPLIBRE EXPRESSIONS & CONSTANTS
 
-            // Expression for station colors. This is robustly designed to handle
-            // the 'lines' property being either a string (for single-line stations)
-            // or an array (for interchange stations).
             const stationColorExpression = [
               "match",
-              [
-                "coalesce",
-                ["at", 0, ["get", "lines"]], // Tries to get the first element if 'lines' is an array
-                ["get", "lines"], // Falls back to using 'lines' directly if it's a string
-              ],
+              ["coalesce", ["at", 0, ["get", "lines"]], ["get", "lines"]],
               ...Object.entries(lineColorMap).flat(),
-              "#808080", // Grey fallback color for any station that doesn't match
+              "#808080", // Grey fallback color
             ];
+
+            // NEW: Define a smaller scaling factor for interchange stations for easy adjustment.
+            const interchangeScaleFactor = 1.2; // Was 1.4, now smaller.
+            const factorbruh = 0.7;
 
             // 4. ADD MAP LAYERS (IN ORDER, FROM BOTTOM TO TOP)
 
             // LAYER 1: MTR Route Casing (the white outline)
-            // This is a wider white line drawn underneath the main colored line.
+            // UPDATED: Made casing thicker at high zoom levels.
             map.addLayer(
               {
                 id: "mtr-routes-casing",
@@ -171,9 +166,11 @@ const MapPage: React.FC = () => {
                     ["linear"],
                     ["zoom"],
                     10,
-                    2.5,
+                    6, // Main line (2) + 4px
                     14,
-                    8,
+                    8, // Main line (4) + 4px
+                    24,
+                    40, // Main line (15) + 6px -> Thicker casing on zoom
                   ],
                   "line-color": "#fff",
                   "line-opacity": 0.8,
@@ -183,11 +180,10 @@ const MapPage: React.FC = () => {
                   "line-join": "round",
                 },
               },
-              "address_label", // Draw below labels
+              "address_label",
             );
 
             // LAYER 2: MTR Route Line (the main colored line)
-            // This line gets its color directly from the 'color' property in the GeoJSON.
             map.addLayer(
               {
                 id: "mtr-routes-line",
@@ -205,7 +201,7 @@ const MapPage: React.FC = () => {
                     24,
                     15,
                   ],
-                  "line-color": ["get", "color"], // Simple and direct
+                  "line-color": ["get", "color"],
                   "line-opacity": 1,
                 },
                 layout: {
@@ -213,11 +209,10 @@ const MapPage: React.FC = () => {
                   "line-join": "round",
                 },
               },
-              "address_label", // Draw below labels
+              "address_label",
             );
 
-            // LAYER 3: MTR Station Outer Ring (the colored outline)
-            // Unique stations: colored by line, normal size
+            // LAYER 3: MTR Station Outer Ring (shrinks on zoom)
             map.addLayer(
               {
                 id: "mtr-stations-outer",
@@ -229,17 +224,13 @@ const MapPage: React.FC = () => {
                     ["linear"],
                     ["zoom"],
                     10,
-                    3.6,
+                    3.6 * factorbruh,
                     13,
-                    7.2,
+                    7.2 * factorbruh,
                     16,
-                    14.4,
-                    19,
-                    24,
+                    14.4 * factorbruh, // Peak size
                     22,
-                    31.2,
-                    24,
-                    38.4,
+                    8 * factorbruh, // Shrinks at higher zooms
                   ],
                   "circle-color": stationColorExpression,
                 },
@@ -247,7 +238,8 @@ const MapPage: React.FC = () => {
               "address_label",
             );
 
-            // LAYER 3b: Interchange Station Outer Ring (always black, 1.4x size)
+            // LAYER 3b: Interchange Station Outer Ring
+            // UPDATED: Using the smaller interchangeScaleFactor.
             map.addLayer(
               {
                 id: "mtr-interchange-stations-outer",
@@ -259,17 +251,13 @@ const MapPage: React.FC = () => {
                     ["linear"],
                     ["zoom"],
                     10,
-                    3.6 * 1.08,
+                    3.6,
                     13,
-                    7.2 * 1.08,
+                    7.2,
                     16,
-                    14.4 * 1.08,
-                    19,
-                    24 * 1.08,
+                    14.4, // Peak size
                     22,
-                    31.2 * 1.08,
-                    24,
-                    38.4 * 1.08,
+                    8, // Shrinks
                   ],
                   "circle-color": "#000",
                 },
@@ -277,8 +265,7 @@ const MapPage: React.FC = () => {
               "address_label",
             );
 
-            // LAYER 4: MTR Station Inner Circle (the white center)
-            // Unique stations: normal size
+            // LAYER 4: MTR Station Inner Circle (shrinks on zoom)
             map.addLayer(
               {
                 id: "mtr-stations-inner",
@@ -290,17 +277,13 @@ const MapPage: React.FC = () => {
                     ["linear"],
                     ["zoom"],
                     10,
-                    1.8,
+                    1.8 * factorbruh,
                     13,
-                    3.6,
+                    3.6 * factorbruh,
                     16,
-                    7.2,
-                    19,
-                    12,
+                    7.2 * factorbruh, // Peak size
                     22,
-                    15.6,
-                    24,
-                    19.2,
+                    4 * factorbruh, // Shrinks
                   ],
                   "circle-color": "#fff",
                 },
@@ -308,7 +291,8 @@ const MapPage: React.FC = () => {
               "address_label",
             );
 
-            // LAYER 4b: Interchange Station Inner Circle (white, 1.4x size)
+            // LAYER 4b: Interchange Station Inner Circle
+            // UPDATED: Using the smaller interchangeScaleFactor.
             map.addLayer(
               {
                 id: "mtr-interchange-stations-inner",
@@ -320,26 +304,21 @@ const MapPage: React.FC = () => {
                     ["linear"],
                     ["zoom"],
                     10,
-                    1.8 * 1.4,
+                    1.8 * interchangeScaleFactor,
                     13,
-                    3.6 * 1.4,
+                    3.6 * interchangeScaleFactor,
                     16,
-                    7.2 * 1.4,
-                    19,
-                    12 * 1.4,
+                    7.2 * interchangeScaleFactor, // Peak size
                     22,
-                    15.6 * 1.4,
-                    24,
-                    19.2 * 1.4,
+                    4 * interchangeScaleFactor, // Shrinks
                   ],
                   "circle-color": "#fff",
                 },
               },
               "address_label",
             );
-          } catch (err) {
-            console.error("Failed to load MTR data and layers:", err);
-            setError("Failed to load MTR data.");
+          } catch (error) {
+            console.error("Error setting up MTR layers:", error);
           }
         });
 
