@@ -102,12 +102,16 @@ const MapPage: React.FC = () => {
         map.touchPitch.disable();
         mapRef.current = map;
 
+        if (!map) return;
+
         map.on("load", async () => {
           try {
             // 1. LOAD MTR DATA
             const mtrRoutes = await fetchMtrRoutes();
             const mtrStations = await fetchMtrStations();
             const mtrInterchangeStations = await fetchMtrInterchangeStations();
+
+            if (!map) return;
 
             map.addSource("mtr-routes", {
               type: "geojson",
@@ -155,6 +159,7 @@ const MapPage: React.FC = () => {
 
             // LAYER 1: MTR Route Casing (the white outline)
             // UPDATED: Made casing thicker at high zoom levels.
+            if (!map) return;
             map.addLayer(
               {
                 id: "mtr-routes-casing",
@@ -184,6 +189,7 @@ const MapPage: React.FC = () => {
             );
 
             // LAYER 2: MTR Route Line (the main colored line)
+            if (!map) return;
             map.addLayer(
               {
                 id: "mtr-routes-line",
@@ -213,6 +219,7 @@ const MapPage: React.FC = () => {
             );
 
             // LAYER 3: MTR Station Outer Ring (shrinks on zoom)
+            if (!map) return;
             map.addLayer(
               {
                 id: "mtr-stations-outer",
@@ -232,7 +239,7 @@ const MapPage: React.FC = () => {
                     22,
                     8 * factorbruh, // Shrinks at higher zooms
                   ],
-                  "circle-color": stationColorExpression,
+                  "circle-color": stationColorExpression as any,
                 },
               },
               "address_label",
@@ -240,6 +247,7 @@ const MapPage: React.FC = () => {
 
             // LAYER 3b: Interchange Station Outer Ring
             // UPDATED: Using the smaller interchangeScaleFactor.
+            if (!map) return;
             map.addLayer(
               {
                 id: "mtr-interchange-stations-outer",
@@ -266,6 +274,7 @@ const MapPage: React.FC = () => {
             );
 
             // LAYER 4: MTR Station Inner Circle (shrinks on zoom)
+            if (!map) return;
             map.addLayer(
               {
                 id: "mtr-stations-inner",
@@ -293,6 +302,7 @@ const MapPage: React.FC = () => {
 
             // LAYER 4b: Interchange Station Inner Circle
             // UPDATED: Using the smaller interchangeScaleFactor.
+            if (!map) return;
             map.addLayer(
               {
                 id: "mtr-interchange-stations-inner",
