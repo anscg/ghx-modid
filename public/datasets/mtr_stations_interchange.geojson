@@ -1,0 +1,697 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288378585,
+        "name": "Lai King",
+        "lines": [
+          "Tsuen Wan Line",
+          "Tung Chung Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1262633,
+          22.3484986
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379522,
+        "name": "Mei Foo",
+        "lines": [
+          "Tsuen Wan Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1392054,
+          22.3379838
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379264,
+        "name": "Prince Edward",
+        "lines": [
+          "Kwun Tong Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1682327,
+          22.3244406
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379318,
+        "name": "Mong Kok",
+        "lines": [
+          "Kwun Tong Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1693132,
+          22.3192386
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379179,
+        "name": "Yau Ma Tei",
+        "lines": [
+          "Kwun Tong Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1707466,
+          22.3130672
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2556738383,
+        "name": "Admiralty",
+        "lines": [
+          "East Rail Line",
+          "Island Line",
+          "South Island Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1659336,
+          22.2781318
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2556738364,
+        "name": "Central",
+        "lines": [
+          "Island Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1593311,
+          22.2815012
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 984741558,
+        "name": "Quarry Bay",
+        "lines": [
+          "Island Line",
+          "Tseung Kwan O Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2089006,
+          22.2881703
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 253288836,
+        "name": "North Point",
+        "lines": [
+          "Island Line",
+          "Tseung Kwan O Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2006096,
+          22.290314
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2564545111,
+        "name": "Admiralty",
+        "lines": [
+          "East Rail Line",
+          "Island Line",
+          "South Island Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1653076,
+          22.2790894
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2564544875,
+        "name": "Central",
+        "lines": [
+          "Island Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1578631,
+          22.281824
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 984741544,
+        "name": "Tiu Keng Leng",
+        "lines": [
+          "Kwun Tong Line",
+          "Tseung Kwan O Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.25233,
+          22.3041138
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288706017,
+        "name": "Yau Tong",
+        "lines": [
+          "Kwun Tong Line",
+          "Tseung Kwan O Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.237233,
+          22.2978508
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331887005,
+        "name": "Diamond Hill",
+        "lines": [
+          "Kwun Tong Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2015891,
+          22.3399613
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331931865,
+        "name": "Kowloon Tong",
+        "lines": [
+          "East Rail Line",
+          "Kwun Tong Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1772586,
+          22.3367533
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331931868,
+        "name": "Prince Edward",
+        "lines": [
+          "Kwun Tong Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1683664,
+          22.3244672
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331931867,
+        "name": "Mong Kok",
+        "lines": [
+          "Kwun Tong Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1694523,
+          22.3192647
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331931872,
+        "name": "Yau Ma Tei",
+        "lines": [
+          "Kwun Tong Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1705858,
+          22.3130598
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4460375639,
+        "name": "Ho Man Tin",
+        "lines": [
+          "Kwun Tong Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1826762,
+          22.3092386
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 307394049,
+        "name": "Tiu Keng Leng",
+        "lines": [
+          "Kwun Tong Line",
+          "Tseung Kwan O Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.252426,
+          22.3040231
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2600847825,
+        "name": "Yau Tong",
+        "lines": [
+          "Kwun Tong Line",
+          "Tseung Kwan O Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2370785,
+          22.2978299
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2600841717,
+        "name": "Quarry Bay",
+        "lines": [
+          "Island Line",
+          "Tseung Kwan O Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2090666,
+          22.2880868
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2600839185,
+        "name": "North Point",
+        "lines": [
+          "Island Line",
+          "Tseung Kwan O Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2006096,
+          22.290314
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1295654804,
+        "name": "Sunny Bay",
+        "lines": [
+          "Disneyland Resort Line",
+          "Tung Chung Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.0290377,
+          22.3317036
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2292179656,
+        "name": "Lai King",
+        "lines": [
+          "Tsuen Wan Line",
+          "Tung Chung Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.12604,
+          22.3484137
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 279126413,
+        "name": "Nam Cheong",
+        "lines": [
+          "Tuen Ma Line",
+          "Tung Chung Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1536861,
+          22.3263889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 9739308596,
+        "name": "Admiralty",
+        "lines": [
+          "East Rail Line",
+          "Island Line",
+          "South Island Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1661095,
+          22.2785831
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4515155553,
+        "name": "Hung Hom",
+        "lines": [
+          "East Rail Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1821693,
+          22.3027378
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1295654891,
+        "name": "Kowloon Tong",
+        "lines": [
+          "East Rail Line",
+          "Kwun Tong Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1758397,
+          22.3369989
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1295654784,
+        "name": "Tai Wai",
+        "lines": [
+          "East Rail Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1784831,
+          22.3731463
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179527342,
+        "name": "Mei Foo",
+        "lines": [
+          "Tsuen Wan Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1365875,
+          22.3388903
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179557427,
+        "name": "Nam Cheong",
+        "lines": [
+          "Tuen Ma Line",
+          "Tung Chung Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1538625,
+          22.3266981
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2308404912,
+        "name": "Hung Hom",
+        "lines": [
+          "East Rail Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.182136,
+          22.3027415
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2308405057,
+        "name": "Ho Man Tin",
+        "lines": [
+          "Kwun Tong Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.182586,
+          22.3094642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2308404910,
+        "name": "Diamond Hill",
+        "lines": [
+          "Kwun Tong Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2012733,
+          22.3396397
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2031291969,
+        "name": "Tai Wai",
+        "lines": [
+          "East Rail Line",
+          "Tuen Ma Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1788126,
+          22.3727593
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1295654882,
+        "name": "Admiralty",
+        "lines": [
+          "East Rail Line",
+          "Island Line",
+          "South Island Line",
+          "Tsuen Wan Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1659336,
+          22.2781318
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1295654897,
+        "name": "Sunny Bay",
+        "lines": [
+          "Disneyland Resort Line",
+          "Tung Chung Line"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.0290377,
+          22.3317036
+        ]
+      }
+    }
+  ]
+}

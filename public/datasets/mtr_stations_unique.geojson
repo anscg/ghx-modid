@@ -1,0 +1,1391 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2550870768,
+        "name": "Tsuen Wan",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.117852,
+          22.373658
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2550870767,
+        "name": "Tai Wo Hau",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.125116,
+          22.3708019
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379617,
+        "name": "Kwai Hing",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.131206,
+          22.3630265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379611,
+        "name": "Kwai Fong",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1278558,
+          22.3568855
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379517,
+        "name": "Lai Chi Kok",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1483992,
+          22.3374427
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379339,
+        "name": "Cheung Sha Wan",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.156174,
+          22.3355274
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 288379363,
+        "name": "Sham Shui Po",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1624588,
+          22.3306332
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2554379407,
+        "name": "Jordan",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1717821,
+          22.3051088
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2555388100,
+        "name": "Tsim Sha Tsui",
+        "lines": [
+          "Tsuen Wan Line"
+        ],
+        "color": "#FF0000"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1722971,
+          22.2971822
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 253288867,
+        "name": "Chai Wan",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2370517,
+          22.2646033
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 253288859,
+        "name": "Heng Fa Chuen",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2397239,
+          22.276619
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 984409448,
+        "name": "Shau Kei Wan",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2288177,
+          22.2790834
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 253288849,
+        "name": "Sai Wan Ho",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2222818,
+          22.2816237
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 278943742,
+        "name": "Tai Koo",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2163547,
+          22.2844656
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2564639695,
+        "name": "Fortress Hill",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1934716,
+          22.2875065
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 3303947368,
+        "name": "Tin Hau",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1920333,
+          22.2821958
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2564544830,
+        "name": "Causeway Bay",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1840143,
+          22.2801023
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2564544993,
+        "name": "Wan Chai",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1729643,
+          22.2775557
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2561063241,
+        "name": "Sheung Wan",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1521488,
+          22.2865033
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2561063247,
+        "name": "Sai Ying Pun",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1427807,
+          22.2854233
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 515673758,
+        "name": "HKU",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1354563,
+          22.2839642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 515677041,
+        "name": "Kennedy Town",
+        "lines": [
+          "Island Line"
+        ],
+        "color": "#0066CC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.128455,
+          22.2812239
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2674392727,
+        "name": "Lam Tin",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2328977,
+          22.3066758
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2674335289,
+        "name": "Kwun Tong",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2263795,
+          22.3121569
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2674335290,
+        "name": "Ngau Tau Kok",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2191447,
+          22.3153219
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2674335288,
+        "name": "Kowloon Bay",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2140058,
+          22.323379
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331931864,
+        "name": "Choi Hung",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.208531,
+          22.335285
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331931871,
+        "name": "Wong Tai Sin",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1943553,
+          22.3415832
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331931866,
+        "name": "Lok Fu",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1870218,
+          22.3379446
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4331931869,
+        "name": "Shek Kip Mei",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1688604,
+          22.3318067
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2319258376,
+        "name": "Whampoa",
+        "lines": [
+          "Kwun Tong Line"
+        ],
+        "color": "#00AA00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1896461,
+          22.304901
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 262761250,
+        "name": "Po Lam",
+        "lines": [
+          "Tseung Kwan O Line"
+        ],
+        "color": "#7D499D"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2579671,
+          22.3225369
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2562413275,
+        "name": "Hang Hau",
+        "lines": [
+          "Tseung Kwan O Line"
+        ],
+        "color": "#7D499D"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2644721,
+          22.3155885
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4784243684,
+        "name": "Tseung Kwan O",
+        "lines": [
+          "Tseung Kwan O Line"
+        ],
+        "color": "#7D499D"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2599962,
+          22.3073157
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4784241743,
+        "name": "LOHAS Park",
+        "lines": [
+          "Tseung Kwan O Line"
+        ],
+        "color": "#7D499D"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2687716,
+          22.2956555
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2291194993,
+        "name": "Tung Chung",
+        "lines": [
+          "Tung Chung Line"
+        ],
+        "color": "#FF6600"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          113.9413221,
+          22.289278
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1295654775,
+        "name": "Tsing Yi",
+        "lines": [
+          "Tung Chung Line"
+        ],
+        "color": "#FF6600"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1074313,
+          22.3583861
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 279126405,
+        "name": "Olympic",
+        "lines": [
+          "Tung Chung Line"
+        ],
+        "color": "#FF6600"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1604114,
+          22.317703
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 278952085,
+        "name": "Kowloon",
+        "lines": [
+          "Tung Chung Line"
+        ],
+        "color": "#FF6600"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1616963,
+          22.3048965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2557051037,
+        "name": "Hong Kong",
+        "lines": [
+          "Tung Chung Line"
+        ],
+        "color": "#FF6600"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1584546,
+          22.2851469
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4515155551,
+        "name": "Exhibition Centre",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1757084,
+          22.281665
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2187196164,
+        "name": "Mong Kok East",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1725466,
+          22.321714
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2185507487,
+        "name": "Sha Tin",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1876187,
+          22.3828531
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2185507515,
+        "name": "Fo Tan",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1981852,
+          22.3954451
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2183425988,
+        "name": "University",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2100166,
+          22.4133903
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 243844884,
+        "name": "Tai Po Market",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1707659,
+          22.4445147
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 623891093,
+        "name": "Tai Wo",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1612012,
+          22.4509658
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 243844839,
+        "name": "Fanling",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1386658,
+          22.4920423
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 243844834,
+        "name": "Sheung Shui",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1280498,
+          22.501124
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 243844812,
+        "name": "Lo Wu",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.113146,
+          22.5281624
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 316729749,
+        "name": "Lok Ma Chau",
+        "lines": [
+          "East Rail Line"
+        ],
+        "color": "#5470C6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.065685,
+          22.5143748
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179507747,
+        "name": "Tuen Mun",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          113.9731045,
+          22.3953319
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179507660,
+        "name": "Siu Hong",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          113.9788763,
+          22.4119477
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179507646,
+        "name": "Tin Shui Wai",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.0045668,
+          22.4481513
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179507764,
+        "name": "Long Ping",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.0254333,
+          22.4477635
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179507624,
+        "name": "Yuen Long",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.0352447,
+          22.4461812
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179507704,
+        "name": "Kam Sheung Road",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.0634688,
+          22.4348907
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179527380,
+        "name": "Tsuen Wan West",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1099666,
+          22.3683158
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179557419,
+        "name": "Austin",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1667055,
+          22.3042568
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2179557425,
+        "name": "East Tsim Sha Tsui",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.174562,
+          22.2953745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2308405024,
+        "name": "To Kwa Wan",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1875853,
+          22.3169878
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2308404918,
+        "name": "Sung Wong Toi",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1914117,
+          22.32578
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2524919264,
+        "name": "Kai Tak",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1993964,
+          22.3302386
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2308405061,
+        "name": "Hin Keng",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1707728,
+          22.3638076
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2031292033,
+        "name": "Che Kung Temple",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.186095,
+          22.374738
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4087334644,
+        "name": "Sha Tin Wai",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.194839,
+          22.3768367
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2031291917,
+        "name": "City One",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.203784,
+          22.3830131
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2031291862,
+        "name": "Shek Mun",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2085474,
+          22.3877892
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4087914607,
+        "name": "Tai Shui Hang",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.222844,
+          22.4084544
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2031291900,
+        "name": "Heng On",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2259505,
+          22.4178164
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2031291916,
+        "name": "Ma On Shan",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2318125,
+          22.4247822
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2031291951,
+        "name": "Wu Kai Sha",
+        "lines": [
+          "Tuen Ma Line"
+        ],
+        "color": "#923011"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.2438864,
+          22.4290802
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2176979623,
+        "name": "Ocean Park",
+        "lines": [
+          "South Island Line"
+        ],
+        "color": "#CCCC00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.174374,
+          22.2486575
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2176979857,
+        "name": "Wong Chuk Hang",
+        "lines": [
+          "South Island Line"
+        ],
+        "color": "#CCCC00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1675294,
+          22.2478045
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2176980003,
+        "name": "Lei Tung",
+        "lines": [
+          "South Island Line"
+        ],
+        "color": "#CCCC00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.1561054,
+          22.2418706
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 3943626060,
+        "name": "South Horizons",
+        "lines": [
+          "South Island Line"
+        ],
+        "color": "#CCCC00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.149089,
+          22.2423467
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 357138078,
+        "name": "Disneyland Resort",
+        "lines": [
+          "Disneyland Resort Line"
+        ],
+        "color": "#FF69B4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.0451419,
+          22.3155384
+        ]
+      }
+    }
+  ]
+}
