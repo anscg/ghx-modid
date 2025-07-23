@@ -1,0 +1,12 @@
+<svg width="186" height="232" viewBox="0 0 186 232" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse opacity="0.5" cx="95" cy="225" rx="66" ry="7" fill="url(#paint0_radial_2189_3170)" style=""/>
+<path d="M93 4.5C142.025 4.5 181.5 45.6161 181.5 96C181.5 108.999 176.861 123.227 170.01 137.022C163.127 150.88 153.838 164.647 144.131 176.823C134.423 189 124.207 199.698 115.4 207.396C111.004 211.238 106.878 214.404 103.279 216.638C101.481 217.754 99.738 218.686 98.1016 219.35C96.5161 219.993 94.7555 220.5 93 220.5C91.2445 220.5 89.4839 219.993 87.8984 219.35C86.262 218.686 84.5193 217.754 82.7207 216.638C79.1224 214.404 74.9957 211.238 70.5996 207.396C61.7926 199.698 51.5771 189 41.8691 176.823C32.1619 164.647 22.8726 150.88 15.9902 137.022C9.13905 123.227 4.5 108.999 4.5 96C4.5 45.6161 43.9753 4.5 93 4.5Z" fill="#31B566" stroke="#269152" style="fill:#31B566;fill:color(display-p3 0.1922 0.7098 0.4000);fill-opacity:1;stroke:#269152;stroke:color(display-p3 0.1490 0.5686 0.3216);stroke-opacity:1;" stroke-width="9"/>
+<circle cx="93" cy="90" r="28" fill="white" style="fill:white;fill-opacity:1;"/>
+<defs>
+<radialGradient id="paint0_radial_2189_3170" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(95 225) scale(66 7)">
+<stop style="stop-color:black;stop-opacity:1;"/>
+<stop offset="0.533654" stop-opacity="0.245192" style="stop-color:black;stop-opacity:0.245192;"/>
+<stop offset="1" stop-opacity="0" style="stop-color:none;stop-opacity:0;"/>
+</radialGradient>
+</defs>
+</svg>
