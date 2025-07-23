@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Protocol } from "pmtiles";
-// MapLibre GL JS types
-// @ts-ignore
+import { motion, useAnimationControls } from "motion/react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
@@ -9,7 +8,6 @@ import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
 let protocol = new Protocol();
 maplibregl.addProtocol("pmtiles", protocol.tile);
 
-// --- Data Fetching Functions (Unchanged) ---
 async function fetchMapStyle(): Promise<any> {
   const response = await fetch("/mapstyles.json");
   if (!response.ok) throw new Error("Failed to load mapstyles.json");
@@ -44,6 +42,8 @@ const MapPage: React.FC = () => {
   const centerMarkerRef = useRef<maplibregl.Marker | null>(null);
   const isProgrammaticMove = useRef(false);
   const watchIdRef = useRef<number | null>(null);
+  const isZooming = useRef(false);
+  const isRequestAllowed = useRef(true);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +54,11 @@ const MapPage: React.FC = () => {
     [number, number] | null
   >(null);
   const [isFollowMode, setIsFollowMode] = useState(true);
+  const [isMapMoving, setIsMapMoving] = useState(false);
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [addressZh, setAddressZh] = useState<string | null>(null);
+
+  const markerAnimationControls = useAnimationControls();
 
   const latestStateRef = useRef({
     follow: isFollowMode,
@@ -65,6 +70,25 @@ const MapPage: React.FC = () => {
       location: userLocation,
     };
   }, [isFollowMode, userLocation]);
+
+  useEffect(() => {
+    const positioning = { x: "-50%", y: "-100%" };
+
+    if (isFollowMode) {
+      markerAnimationControls.set({ ...positioning, scale: 0, opacity: 0 });
+      return;
+    }
+
+    if (isMapMoving) {
+      markerAnimationControls.set({ ...positioning, scale: 0.3, opacity: 0.6 });
+    } else {
+      markerAnimationControls.set({ ...positioning, scale: 0.2, opacity: 1 });
+      markerAnimationControls.start(
+        { ...positioning, scale: 0.3 },
+        { type: "spring", stiffness: 600, damping: 15, mass: 0.5 },
+      );
+    }
+  }, [isFollowMode, isMapMoving, markerAnimationControls]);
 
   const calculateDistance = (
     lat1: number,
@@ -98,13 +122,10 @@ const MapPage: React.FC = () => {
     if (!mapRef.current) return;
     const center = mapRef.current.getCenter();
     const { follow, location } = latestStateRef.current;
-
-    const isSnapped = follow && location;
+    const isSnapped = Boolean(follow && location);
     const finalLng = isSnapped ? location![0] : center.lng;
     const finalLat = isSnapped ? location![1] : center.lat;
-
     setSelectedLocation([finalLng, finalLat]);
-
     if (!centerMarkerRef.current) {
       centerMarkerRef.current = new maplibregl.Marker({
         element: createCenterMarkerElement(isSnapped),
@@ -119,10 +140,42 @@ const MapPage: React.FC = () => {
     }
   }, []);
 
+  const fetchAddress = useCallback(async (lng: number, lat: number) => {
+    const userAgent = "WheelsClient/1.0 (policy@wheels.app)";
+    setIsGeocoding(true);
+    const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lon=${lng}&lat=${lat}&accept-language=zh-Hant`;
+    try {
+      const response = await fetch(nominatimUrl, {
+        headers: { "User-Agent": userAgent },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setAddressZh(data.display_name || "地址未找到。");
+      } else {
+        setAddressZh("無法獲取地址。");
+      }
+    } catch (error) {
+      console.error("Geocoding error:", error);
+      setAddressZh("地理編碼失敗。");
+    } finally {
+      setIsGeocoding(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedLocation && isRequestAllowed.current) {
+      isRequestAllowed.current = false;
+      fetchAddress(selectedLocation[0], selectedLocation[1]);
+      setTimeout(() => {
+        isRequestAllowed.current = true;
+      }, 1000);
+    }
+  }, [selectedLocation, fetchAddress]);
+
   useEffect(() => {
     if (isFollowMode && userLocation && mapRef.current) {
       isProgrammaticMove.current = true;
-      mapRef.current.flyTo({ center: userLocation, zoom: 16, essential: true });
+      mapRef.current.easeTo({ center: userLocation, duration: 500 });
     }
     updateCenterDisplay();
   }, [isFollowMode, userLocation, updateCenterDisplay]);
@@ -143,67 +196,55 @@ const MapPage: React.FC = () => {
     map.touchPitch.disable();
     mapRef.current = map;
 
-    // --- MAP EVENT LISTENERS ---
     map.on("movestart", () => {
       if (isProgrammaticMove.current) return;
-      if (latestStateRef.current.follow) {
-        setIsFollowMode(false);
-      }
+      setIsMapMoving(true);
     });
-
     map.on("moveend", () => {
+      setIsMapMoving(false);
       if (isProgrammaticMove.current) {
         isProgrammaticMove.current = false;
         return;
       }
-
       updateCenterDisplay();
-
-      const currentUserLocation = latestStateRef.current.location;
-      if (currentUserLocation && mapRef.current) {
-        const center = mapRef.current.getCenter();
+      const { follow, location } = latestStateRef.current;
+      if (!follow && location) {
+        const center = map.getCenter();
         const distance = calculateDistance(
           center.lat,
           center.lng,
-          currentUserLocation[1],
-          currentUserLocation[0],
+          location[1],
+          location[0],
         );
         if (distance <= 20) {
           setIsFollowMode(true);
         }
       }
     });
-
-    // --- NEW ---
-    // Intercept the mouse wheel scroll to control zooming in follow mode.
-    map.on("wheel", (e) => {
-      // Only override behavior if in follow mode.
-      if (latestStateRef.current.follow) {
-        // Prevent the default scroll-zoom behavior.
-        e.preventDefault();
-
-        const currentUserLocation = latestStateRef.current.location;
-        if (!currentUserLocation || !mapRef.current) return;
-
-        // Calculate the new zoom level.
-        // e.originalEvent.deltaY is negative for scrolling up (zoom in)
-        // and positive for scrolling down (zoom out).
-        const currentZoom = mapRef.current.getZoom();
-        const newZoom = currentZoom - e.originalEvent.deltaY / 100; // Adjust sensitivity with the divisor.
-
-        // Set the flag to prevent movestart from disabling follow mode.
-        isProgrammaticMove.current = true;
-
-        // Use easeTo for a smooth, centered zoom.
-        mapRef.current.easeTo({
-          center: currentUserLocation,
-          zoom: newZoom,
-          duration: 200, // A short duration feels responsive.
-        });
+    map.on("zoomstart", () => {
+      isZooming.current = true;
+    });
+    map.on("zoomend", () => {
+      isZooming.current = false;
+    });
+    map.on("dragstart", (e: maplibregl.MapTouchEvent) => {
+      if (isProgrammaticMove.current) return;
+      if (
+        e.originalEvent &&
+        "touches" in e.originalEvent &&
+        e.originalEvent.touches.length > 1
+      ) {
+        return;
+      }
+      setIsFollowMode(false);
+    });
+    map.on("move", () => {
+      const { follow, location } = latestStateRef.current;
+      if (follow && isZooming.current && location) {
+        map.setCenter(location);
       }
     });
 
-    // --- DATA FETCHING AND LAYER SETUP ---
     const initializeMap = async () => {
       try {
         const [style, mtrRoutes, mtrStations, mtrInterchangeStations] =
@@ -222,163 +263,6 @@ const MapPage: React.FC = () => {
             type: "geojson",
             data: mtrInterchangeStations,
           });
-          // ... add all layers ...
-          const lineColorMap: Record<string, string> = {};
-          mtrRoutes.features.forEach((f: any) => {
-            if (f.properties?.line_name && f.properties?.color) {
-              lineColorMap[f.properties.line_name] = f.properties.color;
-            }
-          });
-          const stationColorExpression = [
-            "match",
-            ["coalesce", ["at", 0, ["get", "lines"]], ["get", "lines"]],
-            ...Object.entries(lineColorMap).flat(),
-            "#808080",
-          ];
-          map.addLayer(
-            {
-              id: "mtr-routes-casing",
-              type: "line",
-              source: "mtr-routes",
-              paint: {
-                "line-width": [
-                  "interpolate",
-                  ["linear"],
-                  ["zoom"],
-                  10,
-                  6,
-                  14,
-                  8,
-                  24,
-                  40,
-                ],
-                "line-color": "#fff",
-                "line-opacity": 0.8,
-              },
-              layout: { "line-cap": "round", "line-join": "round" },
-            },
-            "address_label",
-          );
-          map.addLayer(
-            {
-              id: "mtr-routes-line",
-              type: "line",
-              source: "mtr-routes",
-              paint: {
-                "line-width": [
-                  "interpolate",
-                  ["linear"],
-                  ["zoom"],
-                  10,
-                  2,
-                  14,
-                  4,
-                  24,
-                  15,
-                ],
-                "line-color": ["get", "color"],
-                "line-opacity": 1,
-              },
-              layout: { "line-cap": "round", "line-join": "round" },
-            },
-            "address_label",
-          );
-          map.addLayer(
-            {
-              id: "mtr-stations-outer",
-              type: "circle",
-              source: "mtr-stations",
-              paint: {
-                "circle-radius": [
-                  "interpolate",
-                  ["linear"],
-                  ["zoom"],
-                  10,
-                  2.52,
-                  13,
-                  5.04,
-                  16,
-                  10.08,
-                  22,
-                  5.6,
-                ],
-                "circle-color": stationColorExpression as any,
-              },
-            },
-            "address_label",
-          );
-          map.addLayer(
-            {
-              id: "mtr-interchange-stations-outer",
-              type: "circle",
-              source: "mtr-interchange-stations",
-              paint: {
-                "circle-radius": [
-                  "interpolate",
-                  ["linear"],
-                  ["zoom"],
-                  10,
-                  3.6,
-                  13,
-                  7.2,
-                  16,
-                  14.4,
-                  22,
-                  8,
-                ],
-                "circle-color": "#000",
-              },
-            },
-            "address_label",
-          );
-          map.addLayer(
-            {
-              id: "mtr-stations-inner",
-              type: "circle",
-              source: "mtr-stations",
-              paint: {
-                "circle-radius": [
-                  "interpolate",
-                  ["linear"],
-                  ["zoom"],
-                  10,
-                  1.26,
-                  13,
-                  2.52,
-                  16,
-                  5.04,
-                  22,
-                  2.8,
-                ],
-                "circle-color": "#fff",
-              },
-            },
-            "address_label",
-          );
-          map.addLayer(
-            {
-              id: "mtr-interchange-stations-inner",
-              type: "circle",
-              source: "mtr-interchange-stations",
-              paint: {
-                "circle-radius": [
-                  "interpolate",
-                  ["linear"],
-                  ["zoom"],
-                  10,
-                  2.16,
-                  13,
-                  4.32,
-                  16,
-                  8.64,
-                  22,
-                  4.8,
-                ],
-                "circle-color": "#fff",
-              },
-            },
-            "address_label",
-          );
         });
       } catch (err: any) {
         if (isMounted) setError(err.message);
@@ -386,7 +270,6 @@ const MapPage: React.FC = () => {
     };
     initializeMap();
 
-    // --- USER LOCATION SETUP ---
     const setupUserLocation = (lng: number, lat: number) => {
       if (!isMounted || !mapRef.current) return;
       const el = document.createElement("div");
@@ -433,7 +316,7 @@ const MapPage: React.FC = () => {
           if (isMounted) setLoading(false);
         });
     } else {
-      setupUserLocation(114.169525, 22.321566); // Mock for desktop
+      setupUserLocation(114.169525, 22.321566);
       setLoading(false);
     }
 
@@ -443,9 +326,8 @@ const MapPage: React.FC = () => {
         navigator.geolocation.clearWatch(watchIdRef.current);
       mapRef.current?.remove();
     };
-  }, [updateCenterDisplay]); // Added updateCenterDisplay here to satisfy exhaustive-deps
+  }, []);
 
-  // --- JSX (Unchanged) ---
   return (
     <div
       style={{
@@ -455,6 +337,7 @@ const MapPage: React.FC = () => {
         top: 0,
         left: 0,
         zIndex: 100,
+        overflow: "hidden",
       }}
     >
       {loading && (
@@ -467,11 +350,10 @@ const MapPage: React.FC = () => {
             alignItems: "center",
             justifyContent: "center",
             background: "rgba(255,255,255,0.8)",
-            zIndex: 101,
+            zIndex: 201,
           }}
         >
-          {" "}
-          Loading map...{" "}
+          Loading map...
         </div>
       )}
       {error && (
@@ -485,11 +367,10 @@ const MapPage: React.FC = () => {
             justifyContent: "center",
             background: "rgba(255,0,0,0.2)",
             color: "red",
-            zIndex: 102,
+            zIndex: 202,
           }}
         >
-          {" "}
-          Error loading map: {error}{" "}
+          Error loading map: {error}
         </div>
       )}
 
@@ -506,25 +387,34 @@ const MapPage: React.FC = () => {
             zIndex: 103,
             fontSize: "14px",
             fontFamily: "system-ui, -apple-system, sans-serif",
+            maxWidth: "350px",
           }}
         >
           <div style={{ fontWeight: "bold", marginBottom: "5px" }}>
-            {" "}
-            {isFollowMode ? "📍 Current Location" : "📌 Selected Location"}{" "}
+            {isFollowMode ? "📍 Current Location" : "📌 Selected Location"}
           </div>
-          <div style={{ fontSize: "12px", color: "#666" }}>
-            {" "}
-            {selectedLocation[1].toFixed(6)},{" "}
-            {selectedLocation[0].toFixed(6)}{" "}
+          <div style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
+            {selectedLocation[1].toFixed(6)}, {selectedLocation[0].toFixed(6)}
           </div>
-          {isFollowMode && (
-            <div
-              style={{ fontSize: "11px", color: "#2196f3", marginTop: "3px" }}
-            >
-              {" "}
-              Following your location{" "}
-            </div>
-          )}
+          <div style={{ borderTop: "1px solid #eee", paddingTop: "8px" }}>
+            {isGeocoding ? (
+              <div style={{ fontSize: "12px", color: "#666" }}>尋找地址...</div>
+            ) : (
+              <>
+                {addressZh && (
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#333",
+                      lineHeight: "1.4",
+                    }}
+                  >
+                    {addressZh}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       )}
 
@@ -555,64 +445,19 @@ const MapPage: React.FC = () => {
         </button>
       )}
 
-      <div
+      <motion.img
+        src="/Markers/MainMarker.svg"
+        alt="Map center marker"
         style={{
           position: "absolute",
           top: "50%",
           left: "50%",
-          transform: "translate(-50%, -50%)",
-          pointerEvents: "none",
           zIndex: 104,
+          pointerEvents: "none",
+          transformOrigin: "50% calc(100% - 10px)",
         }}
-      >
-        <svg width="40" height="40" viewBox="0 0 40 40">
-          <line
-            x1="20"
-            y1="5"
-            x2="20"
-            y2="15"
-            stroke="#333"
-            strokeWidth="2"
-            opacity="0.7"
-          />
-          <line
-            x1="20"
-            y1="25"
-            x2="20"
-            y2="35"
-            stroke="#333"
-            strokeWidth="2"
-            opacity="0.7"
-          />
-          <line
-            x1="5"
-            y1="20"
-            x2="15"
-            y2="20"
-            stroke="#333"
-            strokeWidth="2"
-            opacity="0.7"
-          />
-          <line
-            x1="25"
-            y1="20"
-            x2="35"
-            y2="20"
-            stroke="#333"
-            strokeWidth="2"
-            opacity="0.7"
-          />
-          <circle
-            cx="20"
-            cy="20"
-            r="3"
-            fill="none"
-            stroke="#333"
-            strokeWidth="2"
-            opacity="0.7"
-          />
-        </svg>
-      </div>
+        animate={markerAnimationControls}
+      />
 
       <div
         ref={mapContainer}
