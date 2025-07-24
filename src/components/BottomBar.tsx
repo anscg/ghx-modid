@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import BottomBarButton from "./BottomBarButton";
+import { motion, AnimatePresence } from "motion/react";
 
-// --- Dynamic Style Configuration ---
-const baseHeight = 73; // The reference height for scaling calculations
+// --- Dynamic Style Configuration (No changes here) ---
+const baseHeight = 73;
 
 function useResponsiveHeight() {
   const [height, setHeight] = useState(() => {
@@ -23,37 +24,38 @@ function useResponsiveHeight() {
   return height;
 }
 
-const BottomBar: React.FC = () => {
+const BottomBar: React.FC<{ followMode?: boolean }> = ({
+  followMode = false,
+}) => {
   const height = useResponsiveHeight();
   const scaleFactor = height / baseHeight;
 
-  // Dynamically calculated styles that scale with the height
   const buttonContainerStyle: React.CSSProperties = {
     height: `${height}px`,
-    borderRadius: `1000px`, // Perfectly rounded
+    borderRadius: `1000px`,
     background: "linear-gradient(180deg, #FEFEFE 0%, #F2EEEB 100%)",
     boxShadow: `0 ${4 * scaleFactor}px ${30 * scaleFactor}px 0 rgba(0, 0, 0, 0.30), inset 0 ${-2 * scaleFactor}px ${2 * scaleFactor}px 0 rgba(0, 0, 0, 0.07)`,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
-    userSelect: "none", // Prevent selection of icons and text in the button container
+    userSelect: "none",
   };
 
-  // --- Sub-components using the dynamic styles ---
+  // --- Sub-components (Unchanged) ---
   const BookmarkButton: React.FC = () => (
     <BottomBarButton>
       <div
         style={{
           ...buttonContainerStyle,
-          width: `${height}px`, // Make it a perfect circle
+          width: `${height}px`,
         }}
       >
         <img
           src="/Bookmark.svg"
           alt="Bookmark"
           style={{
-            width: `${25 * scaleFactor}px`, // Scaled icon size
+            width: `${25 * scaleFactor}px`,
             height: `${25 * scaleFactor}px`,
             opacity: 0.4,
           }}
@@ -63,36 +65,36 @@ const BottomBar: React.FC = () => {
   );
 
   const SearchBar: React.FC = () => (
-    <BottomBarButton style={{ flexGrow: 1, margin: "0 15px", minWidth: 0 }}>
+    <BottomBarButton
+      style={{
+        flexGrow: 1,
+        minWidth: 0,
+      }}
+    >
       <div
         style={{
           ...buttonContainerStyle,
           padding: `0 ${25 * scaleFactor}px`,
           gap: `${12 * scaleFactor}px`,
-          overflow: "visible", // Allow overflow if needed
+          overflow: "hidden",
         }}
       >
         <img
           src="/Search.svg"
           alt="Search"
           style={{
-            width: `${16 * scaleFactor}px`, // Scaled icon size
+            width: `${16 * scaleFactor}px`,
             height: `${16 * scaleFactor}px`,
             opacity: 0.2,
           }}
         />
         <span
           style={{
-            fontSize: `${18 * scaleFactor}px`, // Scaled font size
+            fontSize: `${18 * scaleFactor}px`,
             color: "#C0C0C5",
             letterSpacing: "-0.6px",
             fontWeight: 500,
-            whiteSpace: "nowrap", // Prevents wrapping
-            overflow: "visible", // Allows overflow
-            textOverflow: "clip", // No ellipsis, just clip if needed
-            hyphens: "none", // Prevents hyphenation
-            wordBreak: "keep-all", // Prevents breaking between words
-            userSelect: "none", // Prevent selection of text
+            whiteSpace: "nowrap",
           }}
         >
           想去邊度？
@@ -106,14 +108,14 @@ const BottomBar: React.FC = () => {
       <div
         style={{
           ...buttonContainerStyle,
-          width: `${height}px`, // Make it a perfect circle
+          width: `${height}px`,
         }}
       >
         <img
           src="/Home.svg"
           alt="Home"
           style={{
-            width: `${25 * scaleFactor}px`, // Scaled icon size
+            width: `${25 * scaleFactor}px`,
             height: `${25 * scaleFactor}px`,
             opacity: 0.4,
           }}
@@ -122,6 +124,15 @@ const BottomBar: React.FC = () => {
     </BottomBarButton>
   );
 
+  const springTransition = {
+    type: "spring",
+    stiffness: 400,
+    damping: 35,
+  };
+
+  // --- The Fix ---
+  // The rest of your component code (hooks, sub-components, etc.) is perfect and remains the same.
+
   return (
     <div
       style={{
@@ -129,17 +140,42 @@ const BottomBar: React.FC = () => {
         bottom: 0,
         left: 0,
         right: 0,
-        // Increased bottom padding to give the taller bar more space, plus safe area inset for mobile browsers
         padding: `0 25px calc(40px + env(safe-area-inset-bottom, 0)) 25px`,
         zIndex: 105,
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
-        userSelect: "none", // Prevent selection in the whole bar
+        // gap: "15px", // <-- 1. REMOVE the gap property here
+        userSelect: "none",
       }}
     >
-      <BookmarkButton />
-      <SearchBar />
+      <AnimatePresence>
+        {followMode && (
+          <motion.div
+            key="bookmark-button"
+            // 3. ADD marginRight to the animation properties
+            initial={{ opacity: 0, width: 0, marginRight: 0 }}
+            animate={{ opacity: 1, width: height, marginRight: "15px" }}
+            exit={{ opacity: 0, width: 0, marginRight: 0 }}
+            transition={springTransition}
+          >
+            <BookmarkButton />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        layout
+        transition={springTransition}
+        style={{
+          display: "flex",
+          flexGrow: 1,
+          minWidth: 0,
+          marginRight: "15px", // <-- 2. ADD static margin for the gap before the next button
+        }}
+      >
+        <SearchBar />
+      </motion.div>
+
       <QuickButton />
     </div>
   );

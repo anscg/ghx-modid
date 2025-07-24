@@ -190,7 +190,7 @@ const MapPage: React.FC = () => {
       container: mapContainer.current,
       style: { version: 8, sources: {}, layers: [] },
       center: [114.1694, 22.3193],
-      zoom: 12,
+      zoom: 16,
       attributionControl: false,
       pitchWithRotate: false,
       dragRotate: false,
@@ -218,7 +218,7 @@ const MapPage: React.FC = () => {
           location[1],
           location[0],
         );
-        if (distance <= 20) {
+        if (distance <= 25) {
           impactFeedback("soft");
           setIsFollowMode(true);
         }
@@ -316,23 +316,14 @@ const MapPage: React.FC = () => {
             data: mtrInterchangeStations as FeatureCollection,
           });
 
+          // This mapping logic is correct for the routes, but not needed for the stations.
+          // We will leave it here as it doesn't harm anything and might be useful for other layers.
           const lineColorMap: Record<string, string> = {};
           mtrRoutes.features.forEach((f) => {
             if (f.properties?.line_name && f.properties?.color) {
               lineColorMap[f.properties.line_name] = f.properties.color;
             }
           });
-
-          const colorPairs = Object.entries(lineColorMap).flatMap(([k, v]) => [
-            k,
-            v,
-          ]);
-          const stationColorExpression = [
-            "match",
-            ["get", "line_name"],
-            ...colorPairs,
-            "#808080",
-          ] as unknown as ExpressionSpecification;
 
           map.addLayer(
             {
@@ -401,7 +392,9 @@ const MapPage: React.FC = () => {
                   22,
                   5.6,
                 ],
-                "circle-color": stationColorExpression,
+                // --- FIX ---
+                // Directly get the color from the feature's "color" property
+                "circle-color": ["get", "color"],
               },
             },
             "address_label",
@@ -643,7 +636,7 @@ const MapPage: React.FC = () => {
         animate={markerAnimationControls}
       />
 
-      <BottomBar />
+      <BottomBar followMode={isFollowMode} />
     </div>
   );
 };
