@@ -37,6 +37,7 @@ const BottomBar: React.FC = () => {
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
+    userSelect: "none", // Prevent selection of icons and text in the button container
   };
 
   // --- Sub-components using the dynamic styles ---
@@ -91,6 +92,7 @@ const BottomBar: React.FC = () => {
             textOverflow: "clip", // No ellipsis, just clip if needed
             hyphens: "none", // Prevents hyphenation
             wordBreak: "keep-all", // Prevents breaking between words
+            userSelect: "none", // Prevent selection of text
           }}
         >
           想去邊度？
@@ -128,11 +130,12 @@ const BottomBar: React.FC = () => {
         left: 0,
         right: 0,
         // Increased bottom padding to give the taller bar more space, plus safe area inset for mobile browsers
-        padding: `0 25px calc(34px + env(safe-area-inset-bottom, 0)) 25px`,
+        padding: `0 25px calc(40px + env(safe-area-inset-bottom, 0)) 25px`,
         zIndex: 105,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        userSelect: "none", // Prevent selection in the whole bar
       }}
     >
       <BookmarkButton />

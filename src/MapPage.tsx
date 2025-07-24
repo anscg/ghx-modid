@@ -629,75 +629,6 @@ const MapPage: React.FC = () => {
           Error loading map: {error}
         </div>
       )}
-      {selectedLocation && (
-        <div
-          style={{
-            position: "absolute",
-            top: "20px",
-            left: "20px",
-            background: "rgba(255, 255, 255, 0.9)",
-            padding: "10px 15px",
-            borderRadius: "8px",
-            boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-            zIndex: 103,
-            fontSize: "14px",
-            fontFamily: "system-ui, -apple-system, sans-serif",
-            maxWidth: "350px",
-          }}
-        >
-          <div style={{ fontWeight: "bold", marginBottom: "5px" }}>
-            {isFollowMode ? "📍 Current Location" : "📌 Selected Location"}
-          </div>
-          <div style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
-            {selectedLocation[1].toFixed(6)}, {selectedLocation[0].toFixed(6)}
-          </div>
-          <div style={{ borderTop: "1px solid #eee", paddingTop: "8px" }}>
-            {isGeocoding ? (
-              <div style={{ fontSize: "12px", color: "#666" }}>尋找地址...</div>
-            ) : (
-              <>
-                {addressZh && (
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "#333",
-                      lineHeight: "1.4",
-                    }}
-                  >
-                    {addressZh}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      )}
-      {userLocation && (
-        <button
-          onClick={() => setIsFollowMode((prev) => !prev)}
-          style={{
-            position: "absolute",
-            bottom: "125px", // <--- ADJUSTED: MOVED UP TO AVOID OVERLAP
-            right: "20px",
-            width: "50px",
-            height: "50px",
-            borderRadius: "25px",
-            border: "none",
-            background: isFollowMode ? "#2196f3" : "rgba(255, 255, 255, 0.9)",
-            color: isFollowMode ? "white" : "#333",
-            boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
-            cursor: "pointer",
-            fontSize: "20px",
-            zIndex: 103,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          title={isFollowMode ? "Stop following" : "Follow my location"}
-        >
-          {isFollowMode ? "📍" : "🎯"}
-        </button>
-      )}
       <motion.img
         src="/Markers/MainMarker.svg"
         alt="Map center marker"
@@ -712,7 +643,6 @@ const MapPage: React.FC = () => {
         animate={markerAnimationControls}
       />
 
-      {/* --- ADDED BOTTOM BAR --- */}
       <BottomBar />
     </div>
   );
