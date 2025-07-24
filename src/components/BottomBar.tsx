@@ -103,7 +103,7 @@ const BottomBar: React.FC = () => {
         left: 0,
         right: 0,
         // Increased bottom padding to give the taller bar more space, plus safe area inset for mobile browsers
-        padding: `0 20px calc(34px + env(safe-area-inset-bottom)) 20px`,
+        padding: `0 20px calc(34px + env(safe-area-inset-bottom, 100px)) 20px`,
         zIndex: 105,
         display: "flex",
         alignItems: "center",
