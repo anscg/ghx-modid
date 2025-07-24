@@ -134,18 +134,6 @@ const MapPage: React.FC = () => {
     const finalLng = isSnapped ? location![0] : center.lng;
     const finalLat = isSnapped ? location![1] : center.lat;
     setSelectedLocation([finalLng, finalLat]);
-    if (!centerMarkerRef.current) {
-      centerMarkerRef.current = new maplibregl.Marker({
-        element: createCenterMarkerElement(isSnapped),
-        anchor: "center",
-      })
-        .setLngLat([finalLng, finalLat])
-        .addTo(mapRef.current);
-    } else {
-      centerMarkerRef.current.setLngLat([finalLng, finalLat]);
-      (centerMarkerRef.current.getElement() as HTMLDivElement).innerHTML =
-        createCenterMarkerElement(isSnapped).innerHTML;
-    }
   }, []);
 
   const fetchAddress = useCallback(async (lng: number, lat: number) => {
