@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { FeatureCollection } from "geojson";
 import { Protocol } from "pmtiles";
 import { motion, useAnimationControls } from "motion/react";
 import maplibregl, { ExpressionSpecification } from "maplibre-gl";
@@ -17,19 +18,6 @@ let protocol = new Protocol();
 maplibregl.addProtocol("pmtiles", protocol.tile);
 
 // Define interfaces for better type safety with fetched data
-interface GeoJSONFeature {
-  type: "Feature";
-  geometry: {
-    type: string;
-    coordinates: any;
-  };
-  properties: Record<string, any>;
-}
-
-interface GeoJSONFeatureCollection {
-  type: "FeatureCollection";
-  features: GeoJSONFeature[];
-}
 
 async function fetchMapStyle(): Promise<any> {
   const response = await fetch("/mapstyles.json");
@@ -40,18 +28,18 @@ async function fetchMapStyle(): Promise<any> {
   }
   return style;
 }
-async function fetchMtrRoutes(): Promise<GeoJSONFeatureCollection> {
+async function fetchMtrRoutes(): Promise<FeatureCollection> {
   const response = await fetch("/datasets/mtr_routes.geojson");
   if (!response.ok) throw new Error("Failed to load mtr_routes.geojson");
   return await response.json();
 }
-async function fetchMtrStations(): Promise<GeoJSONFeatureCollection> {
+async function fetchMtrStations(): Promise<FeatureCollection> {
   const response = await fetch("/datasets/mtr_stations_unique.geojson");
   if (!response.ok)
     throw new Error("Failed to load mtr_stations_unique.geojson");
   return await response.json();
 }
-async function fetchMtrInterchangeStations(): Promise<GeoJSONFeatureCollection> {
+async function fetchMtrInterchangeStations(): Promise<FeatureCollection> {
   const response = await fetch("/datasets/mtr_stations_interchange.geojson");
   if (!response.ok)
     throw new Error("Failed to load mtr_stations_interchange.geojson");
@@ -65,8 +53,7 @@ const MapPage: React.FC = () => {
   const centerMarkerRef = useRef<maplibregl.Marker | null>(null);
   const isProgrammaticMove = useRef(false);
   const watchIdRef = useRef<number | null>(null);
-  const isRequestAllowed = useRef(true);
-
+  //const isRequestAllowed = useRef(true);
   // Refs for custom pinch-to-zoom
   const pinchStartDistanceRef = useRef<number | null>(null);
   const pinchStartZoomRef = useRef<number | null>(null);
@@ -359,13 +346,16 @@ const MapPage: React.FC = () => {
             }
           });
 
-          const colorPairs = Object.entries(lineColorMap).flat();
-          const stationColorExpression: ExpressionSpecification = [
+          const colorPairs = Object.entries(lineColorMap).flatMap(([k, v]) => [
+            k,
+            v,
+          ]);
+          const stationColorExpression = [
             "match",
             ["get", "line_name"],
             ...colorPairs,
             "#808080",
-          ];
+          ] as unknown as ExpressionSpecification;
 
           map.addLayer(
             {
