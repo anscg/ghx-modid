@@ -50,7 +50,6 @@ const MapPage: React.FC = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
-  const centerMarkerRef = useRef<maplibregl.Marker | null>(null);
   const isProgrammaticMove = useRef(false);
   const watchIdRef = useRef<number | null>(null);
   //const isRequestAllowed = useRef(true);
