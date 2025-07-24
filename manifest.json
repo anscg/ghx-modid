@@ -2,7 +2,7 @@
   "name": "Wheels",
   "short_name": "wheels",
   "description": "Transit by riders, for riders.",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
