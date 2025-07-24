@@ -42,12 +42,13 @@ const BookmarkButton: React.FC = () => (
 );
 
 const SearchBar: React.FC = () => (
-  <BottomBarButton style={{ flexGrow: 1, margin: "0 15px" }}>
+  <BottomBarButton style={{ flexGrow: 1, margin: "0 15px", minWidth: 0 }}>
     <div
       style={{
         ...buttonContainerStyle,
         padding: `0 ${25 * scaleFactor}px`,
         gap: `${12 * scaleFactor}px`,
+        overflow: "visible", // Allow overflow if needed
       }}
     >
       <img
@@ -65,6 +66,11 @@ const SearchBar: React.FC = () => (
           color: "#C0C0C5",
           letterSpacing: "-0.6px",
           fontWeight: 500,
+          whiteSpace: "nowrap", // Prevents wrapping
+          overflow: "visible", // Allows overflow
+          textOverflow: "clip", // No ellipsis, just clip if needed
+          hyphens: "none", // Prevents hyphenation
+          wordBreak: "keep-all", // Prevents breaking between words
         }}
       >
         想去邊度？
