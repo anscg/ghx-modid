@@ -29,12 +29,12 @@ const BookmarkButton: React.FC = () => (
       }}
     >
       <img
-        src="/bookmark.svg"
+        src="/Bookmark.svg"
         alt="Bookmark"
         style={{
-          width: `${30 * scaleFactor}px`, // Scaled icon size
-          height: `${30 * scaleFactor}px`,
-          opacity: 0.6,
+          width: `${25 * scaleFactor}px`, // Scaled icon size
+          height: `${25 * scaleFactor}px`,
+          opacity: 0.4,
         }}
       />
     </div>
@@ -51,18 +51,19 @@ const SearchBar: React.FC = () => (
       }}
     >
       <img
-        src="/search.svg"
+        src="/Search.svg"
         alt="Search"
         style={{
-          width: `${28 * scaleFactor}px`, // Scaled icon size
-          height: `${28 * scaleFactor}px`,
-          opacity: 0.6,
+          width: `${16 * scaleFactor}px`, // Scaled icon size
+          height: `${16 * scaleFactor}px`,
+          opacity: 0.2,
         }}
       />
       <span
         style={{
-          fontSize: `${22 * scaleFactor}px`, // Scaled font size
-          color: "rgba(0, 0, 0, 0.4)",
+          fontSize: `${18 * scaleFactor}px`, // Scaled font size
+          color: "#C0C0C5",
+          letterSpacing: "-0.6px",
           fontWeight: 500,
         }}
       >
@@ -72,7 +73,7 @@ const SearchBar: React.FC = () => (
   </BottomBarButton>
 );
 
-const HomeButton: React.FC = () => (
+const QuickButton: React.FC = () => (
   <BottomBarButton>
     <div
       style={{
@@ -81,39 +82,14 @@ const HomeButton: React.FC = () => (
       }}
     >
       <img
-        src="/home.svg"
+        src="/Home.svg"
         alt="Home"
         style={{
-          width: `${32 * scaleFactor}px`, // Scaled icon size
-          height: `${32 * scaleFactor}px`,
-          opacity: 0.6,
+          width: `${25 * scaleFactor}px`, // Scaled icon size
+          height: `${25 * scaleFactor}px`,
+          opacity: 0.4,
         }}
       />
-      <div
-        style={{
-          position: "absolute",
-          bottom: `-${3 * scaleFactor}px`, // Scaled position
-          right: `-${3 * scaleFactor}px`,
-          width: `${30 * scaleFactor}px`, // Scaled size
-          height: `${30 * scaleFactor}px`,
-          borderRadius: `1000px`,
-          background: "#616161",
-          boxShadow: `0 ${2 * scaleFactor}px ${4 * scaleFactor}px rgba(0,0,0,0.25)`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <img
-          src="/add.svg"
-          alt="Add"
-          style={{
-            width: `${16 * scaleFactor}px`, // Scaled icon size
-            height: `${16 * scaleFactor}px`,
-            filter: "brightness(0) invert(1)",
-          }}
-        />
-      </div>
     </div>
   </BottomBarButton>
 );
@@ -126,8 +102,8 @@ const BottomBar: React.FC = () => {
         bottom: 0,
         left: 0,
         right: 0,
-        // Increased bottom padding to give the taller bar more space
-        padding: "0 20px 34px 20px",
+        // Increased bottom padding to give the taller bar more space, plus safe area inset for mobile browsers
+        padding: `0 20px calc(34px + env(safe-area-inset-bottom)) 20px`,
         zIndex: 105,
         display: "flex",
         alignItems: "center",
@@ -136,7 +112,7 @@ const BottomBar: React.FC = () => {
     >
       <BookmarkButton />
       <SearchBar />
-      <HomeButton />
+      <QuickButton />
     </div>
   );
 };

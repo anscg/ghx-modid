@@ -1,3 +1,46 @@
+@font-face {
+    font-family: "Geist";
+    src:
+        url("/Font/Geist/Geist[wght].woff2") format("woff2"),
+        url("/Font/Geist/Geist-Regular.woff2") format("woff2");
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Geist";
+    src:
+        url("/Font/Geist/Geist-Italic[wght].woff2") format("woff2"),
+        url("/Font/Geist/Geist-RegularItalic.woff2") format("woff2");
+    font-weight: 400 900;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: "GlowSansTC";
+    src: url("/Font/GlowSansTC-Normal-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+4E00-9FFF, U+3400-4DBF, U+20000-2A6DF;
+}
+@font-face {
+    font-family: "GlowSansTC";
+    src: url("/Font/GlowSansTC-Normal-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+4E00-9FFF, U+3400-4DBF, U+20000-2A6DF;
+}
+@font-face {
+    font-family: "GlowSansTC";
+    src: url("/Font/GlowSansTC-Normal-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+4E00-9FFF, U+3400-4DBF, U+20000-2A6DF;
+}
+
 * {
     cursor: default !important;
 }
@@ -10,7 +53,7 @@
     filter: drop-shadow(0 0 2em #61dafb);
 }
 :root {
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-family: Geist, GlowSansTC, Inter, Avenir, Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 24px;
     font-weight: 400;
@@ -27,6 +70,11 @@
     touch-action: pan-x pan-y;
 
     height: 100%;
+}
+
+button {
+    font-weight: 500;
+    font-family: Geist, GlowSansTC, Inter, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .container {
@@ -66,6 +114,10 @@ a:hover {
 
 h1 {
     text-align: center;
+}
+
+div {
+    font-family: Geist, GlowSansTC, Inter, Avenir, Helvetica, Arial, sans-serif;
 }
 
 input,
