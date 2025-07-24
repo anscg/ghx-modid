@@ -263,29 +263,34 @@ const MapPage: React.FC = () => {
     };
 
     const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-      if (e.touches.length === 2 && latestStateRef.current.follow) {
+      const touches: TouchList = e.nativeEvent.touches as TouchList;
+      if (touches.length === 2 && latestStateRef.current.follow) {
         e.preventDefault();
         map.dragPan.disable();
-        pinchStartDistanceRef.current = getTouchDistance(e.touches);
+        pinchStartDistanceRef.current = getTouchDistance(touches);
         pinchStartZoomRef.current = map.getZoom();
       }
     };
 
     const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+      const touches: TouchList = e.nativeEvent.touches as TouchList;
       if (
-        e.touches.length === 2 &&
+        touches.length === 2 &&
         pinchStartDistanceRef.current &&
         latestStateRef.current.follow
       ) {
         e.preventDefault();
-        const currentDist = getTouchDistance(e.touches);
+        const currentDist = getTouchDistance(touches);
         const scale = currentDist / pinchStartDistanceRef.current;
-        const newZoom = pinchStartZoomRef.current + Math.log2(scale);
-        map.setZoom(newZoom);
+        // Check for null before using pinchStartZoomRef.current
+        if (pinchStartZoomRef.current !== null) {
+          const newZoom = pinchStartZoomRef.current + Math.log2(scale);
+          map.setZoom(newZoom);
+        }
       }
     };
 
-    const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    const handleTouchEnd = () => {
       if (pinchStartDistanceRef.current) {
         pinchStartDistanceRef.current = null;
         pinchStartZoomRef.current = null;
