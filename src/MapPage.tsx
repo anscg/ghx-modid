@@ -126,17 +126,6 @@ const MapPage: React.FC = () => {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   };
 
-  const createCenterMarkerElement = (isSnapped: boolean): HTMLDivElement => {
-    const el = document.createElement("div");
-    el.style.cssText = "width: 24px; height: 24px; pointer-events: none;";
-    if (isSnapped) {
-      el.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="rgba(33, 150, 243, 0.3)" stroke="#2196f3" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="#2196f3"/><text x="12" y="8" text-anchor="middle" font-size="8" fill="#2196f3">📍</text></svg>`;
-    } else {
-      el.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="rgba(255, 0, 0, 0.3)" stroke="#ff0000" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="#ff0000"/></svg>`;
-    }
-    return el;
-  };
-
   const updateCenterDisplay = useCallback(() => {
     if (!mapRef.current) return;
     const center = mapRef.current.getCenter();
