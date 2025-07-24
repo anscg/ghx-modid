@@ -6,6 +6,7 @@ import maplibregl, { ExpressionSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
 import { selectionFeedback, impactFeedback } from "@tauri-apps/plugin-haptics";
+import BottomBar from "./components/BottomBar"; // <--- IMPORT THE NEW COMPONENT
 
 // Augment the Window interface to include __TAURI__
 declare global {
@@ -584,6 +585,17 @@ const MapPage: React.FC = () => {
         overflow: "hidden",
       }}
     >
+      {/* --- Map and UI Elements --- */}
+      <div
+        ref={mapContainer}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      />
       {loading && (
         <div
           style={{
@@ -665,7 +677,7 @@ const MapPage: React.FC = () => {
           onClick={() => setIsFollowMode((prev) => !prev)}
           style={{
             position: "absolute",
-            bottom: "80px",
+            bottom: "125px", // <--- ADJUSTED: MOVED UP TO AVOID OVERLAP
             right: "20px",
             width: "50px",
             height: "50px",
@@ -699,16 +711,9 @@ const MapPage: React.FC = () => {
         }}
         animate={markerAnimationControls}
       />
-      <div
-        ref={mapContainer}
-        style={{
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      />
+
+      {/* --- ADDED BOTTOM BAR --- */}
+      <BottomBar />
     </div>
   );
 };
