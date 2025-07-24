@@ -252,7 +252,6 @@ const MapPage: React.FC = () => {
         map.setCenter(location);
       }
     });
-
     const initializeMap = async () => {
       try {
         const [style, mtrRoutes, mtrStations, mtrInterchangeStations] =
@@ -271,6 +270,162 @@ const MapPage: React.FC = () => {
             type: "geojson",
             data: mtrInterchangeStations,
           });
+          const lineColorMap: Record<string, string> = {};
+          mtrRoutes.features.forEach((f: any) => {
+            if (f.properties?.line_name && f.properties?.color) {
+              lineColorMap[f.properties.line_name] = f.properties.color;
+            }
+          });
+          const stationColorExpression = [
+            "match",
+            ["coalesce", ["at", 0, ["get", "lines"]], ["get", "lines"]],
+            ...Object.entries(lineColorMap).flat(),
+            "#808080",
+          ];
+          map.addLayer(
+            {
+              id: "mtr-routes-casing",
+              type: "line",
+              source: "mtr-routes",
+              paint: {
+                "line-width": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  10,
+                  6,
+                  14,
+                  8,
+                  24,
+                  40,
+                ],
+                "line-color": "#fff",
+                "line-opacity": 0.8,
+              },
+              layout: { "line-cap": "round", "line-join": "round" },
+            },
+            "address_label",
+          );
+          map.addLayer(
+            {
+              id: "mtr-routes-line",
+              type: "line",
+              source: "mtr-routes",
+              paint: {
+                "line-width": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  10,
+                  2,
+                  14,
+                  4,
+                  24,
+                  15,
+                ],
+                "line-color": ["get", "color"],
+                "line-opacity": 1,
+              },
+              layout: { "line-cap": "round", "line-join": "round" },
+            },
+            "address_label",
+          );
+          map.addLayer(
+            {
+              id: "mtr-stations-outer",
+              type: "circle",
+              source: "mtr-stations",
+              paint: {
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  10,
+                  2.52,
+                  13,
+                  5.04,
+                  16,
+                  10.08,
+                  22,
+                  5.6,
+                ],
+                "circle-color": stationColorExpression as any,
+              },
+            },
+            "address_label",
+          );
+          map.addLayer(
+            {
+              id: "mtr-interchange-stations-outer",
+              type: "circle",
+              source: "mtr-interchange-stations",
+              paint: {
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  10,
+                  3.6,
+                  13,
+                  7.2,
+                  16,
+                  14.4,
+                  22,
+                  8,
+                ],
+                "circle-color": "#000",
+              },
+            },
+            "address_label",
+          );
+          map.addLayer(
+            {
+              id: "mtr-stations-inner",
+              type: "circle",
+              source: "mtr-stations",
+              paint: {
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  10,
+                  1.26,
+                  13,
+                  2.52,
+                  16,
+                  5.04,
+                  22,
+                  2.8,
+                ],
+                "circle-color": "#fff",
+              },
+            },
+            "address_label",
+          );
+          map.addLayer(
+            {
+              id: "mtr-interchange-stations-inner",
+              type: "circle",
+              source: "mtr-interchange-stations",
+              paint: {
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  10,
+                  2.16,
+                  13,
+                  4.32,
+                  16,
+                  8.64,
+                  22,
+                  4.8,
+                ],
+                "circle-color": "#fff",
+              },
+            },
+            "address_label",
+          );
         });
       } catch (err: any) {
         if (isMounted) setError(err.message);
