@@ -24,9 +24,10 @@ function useResponsiveHeight() {
   return height;
 }
 
-const BottomBar: React.FC<{ followMode?: boolean }> = ({
-  followMode = false,
-}) => {
+const BottomBar: React.FC<{
+  followMode?: boolean;
+  addressZh?: string | null;
+}> = ({ followMode = false, addressZh = "" }) => {
   const height = useResponsiveHeight();
   const scaleFactor = height / baseHeight;
 
@@ -64,7 +65,10 @@ const BottomBar: React.FC<{ followMode?: boolean }> = ({
     </BottomBarButton>
   );
 
-  const SearchBar: React.FC = () => (
+  const SearchBar: React.FC<{
+    followMode: boolean;
+    addressZh?: string | null;
+  }> = ({ followMode, addressZh = "" }) => (
     <BottomBarButton
       style={{
         flexGrow: 1,
@@ -77,28 +81,97 @@ const BottomBar: React.FC<{ followMode?: boolean }> = ({
           padding: `0 ${25 * scaleFactor}px`,
           gap: `${12 * scaleFactor}px`,
           overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          minWidth: 0,
         }}
       >
-        <img
-          src="/Search.svg"
-          alt="Search"
-          style={{
-            width: `${16 * scaleFactor}px`,
-            height: `${16 * scaleFactor}px`,
-            opacity: 0.2,
-          }}
-        />
-        <span
-          style={{
-            fontSize: `${18 * scaleFactor}px`,
-            color: "#C0C0C5",
-            letterSpacing: "-0.6px",
-            fontWeight: 500,
-            whiteSpace: "nowrap",
-          }}
-        >
-          想去邊度？
-        </span>
+        {followMode ? (
+          <>
+            <motion.img
+              key="search-icon"
+              src="/Search.svg"
+              alt="Search"
+              style={{
+                width: `${16 * scaleFactor}px`,
+                height: `${16 * scaleFactor}px`,
+                opacity: 0.2,
+                flexShrink: 0,
+              }}
+              initial={false}
+              animate={{ opacity: 0.2 }}
+              transition={{ duration: 0.3 }}
+            />
+            <motion.span
+              key="search-text"
+              style={{
+                fontSize: `${18 * scaleFactor}px`,
+                color: "#C0C0C5",
+                letterSpacing: "-0.6px",
+                fontWeight: 500,
+                whiteSpace: "nowrap",
+                marginLeft: `${0 * scaleFactor}px`,
+                flexShrink: 1,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                minWidth: 0,
+              }}
+              initial={false}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              想去邊度？
+            </motion.span>
+          </>
+        ) : (
+          <motion.div
+            key="address-display"
+            initial={false}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "center",
+              paddingLeft: `${6 * scaleFactor}px`,
+              minWidth: 0,
+              width: "100%",
+            }}
+          >
+            <span
+              style={{
+                fontSize: `${13 * scaleFactor}px`,
+                color: "#C0C0C5",
+                fontWeight: 500,
+                marginBottom: `${-1 * scaleFactor}px`,
+                letterSpacing: "-0.6px",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxWidth: "100%",
+              }}
+            >
+              鄰近
+            </span>
+            <span
+              style={{
+                fontSize: `${20 * scaleFactor}px`,
+                color: "#5F5F5F",
+                fontWeight: 500,
+                letterSpacing: "-0.6px",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                maxWidth: "100%",
+                minWidth: 0,
+              }}
+              title={addressZh || ""}
+            >
+              {addressZh || ""}
+            </span>
+          </motion.div>
+        )}
       </div>
     </BottomBarButton>
   );
@@ -145,7 +218,6 @@ const BottomBar: React.FC<{ followMode?: boolean }> = ({
         zIndex: 105,
         display: "flex",
         alignItems: "center",
-        // gap: "15px", // <-- 1. REMOVE the gap property here
         userSelect: "none",
       }}
     >
@@ -153,7 +225,6 @@ const BottomBar: React.FC<{ followMode?: boolean }> = ({
         {followMode && (
           <motion.div
             key="bookmark-button"
-            // 3. ADD marginRight to the animation properties
             initial={{ opacity: 0, width: 0, marginRight: 0 }}
             animate={{ opacity: 1, width: height, marginRight: "15px" }}
             exit={{ opacity: 0, width: 0, marginRight: 0 }}
@@ -171,10 +242,11 @@ const BottomBar: React.FC<{ followMode?: boolean }> = ({
           display: "flex",
           flexGrow: 1,
           minWidth: 0,
-          marginRight: "15px", // <-- 2. ADD static margin for the gap before the next button
+          marginRight: "15px",
+          alignItems: "center",
         }}
       >
-        <SearchBar />
+        <SearchBar followMode={!!followMode} addressZh={addressZh} />
       </motion.div>
 
       <QuickButton />

@@ -68,11 +68,8 @@ const MapPage: React.FC = () => {
   >(null);
   const [isFollowMode, setIsFollowMode] = useState(true);
   const [isMapMoving, setIsMapMoving] = useState(false);
-  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [_, setIsGeocoding] = useState(false);
   const [addressZh, setAddressZh] = useState<string | null>(null);
-
-  console.log(isGeocoding);
-  console.log(addressZh);
 
   const markerAnimationControls = useAnimationControls();
 
@@ -112,6 +109,26 @@ const MapPage: React.FC = () => {
     }
   }, [isFollowMode, isMapMoving, markerAnimationControls]);
 
+  function formatAddress(address: {
+    building?: string;
+    house_number?: string;
+    road?: string;
+    suburb?: string;
+    city_district?: string;
+    city?: string;
+  }) {
+    // Only include the fields you want, and skip the street number
+    const parts = [
+      address.building,
+      address.road,
+      address.house_number,
+      address.suburb,
+      address.city_district,
+      address.city,
+    ].filter(Boolean); // Remove undefined/null
+    return parts.join(" ");
+  }
+
   const calculateDistance = (
     lat1: number,
     lng1: number,
@@ -149,7 +166,7 @@ const MapPage: React.FC = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setAddressZh(data.display_name || "地址未找到。");
+        setAddressZh(formatAddress(data.address) || "地址未找到。");
       } else {
         setAddressZh("無法獲取地址。");
       }
@@ -639,7 +656,7 @@ const MapPage: React.FC = () => {
         animate={markerAnimationControls}
       />
 
-      <BottomBar followMode={isFollowMode} />
+      <BottomBar followMode={isFollowMode} addressZh={addressZh} />
     </div>
   );
 };
