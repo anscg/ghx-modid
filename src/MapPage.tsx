@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { FeatureCollection } from "geojson";
 import { Protocol } from "pmtiles";
 import { motion, useAnimationControls } from "motion/react";
-import maplibregl, { ExpressionSpecification } from "maplibre-gl";
+import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
 import { selectionFeedback, impactFeedback } from "@tauri-apps/plugin-haptics";
