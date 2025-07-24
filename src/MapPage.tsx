@@ -1,13 +1,35 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Protocol } from "pmtiles";
 import { motion, useAnimationControls } from "motion/react";
-import maplibregl from "maplibre-gl";
+import maplibregl, { ExpressionSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
 import { selectionFeedback, impactFeedback } from "@tauri-apps/plugin-haptics";
 
+// Augment the Window interface to include __TAURI__
+declare global {
+  interface Window {
+    __TAURI__?: object;
+  }
+}
+
 let protocol = new Protocol();
 maplibregl.addProtocol("pmtiles", protocol.tile);
+
+// Define interfaces for better type safety with fetched data
+interface GeoJSONFeature {
+  type: "Feature";
+  geometry: {
+    type: string;
+    coordinates: any;
+  };
+  properties: Record<string, any>;
+}
+
+interface GeoJSONFeatureCollection {
+  type: "FeatureCollection";
+  features: GeoJSONFeature[];
+}
 
 async function fetchMapStyle(): Promise<any> {
   const response = await fetch("/mapstyles.json");
@@ -18,18 +40,18 @@ async function fetchMapStyle(): Promise<any> {
   }
   return style;
 }
-async function fetchMtrRoutes(): Promise<any> {
+async function fetchMtrRoutes(): Promise<GeoJSONFeatureCollection> {
   const response = await fetch("/datasets/mtr_routes.geojson");
   if (!response.ok) throw new Error("Failed to load mtr_routes.geojson");
   return await response.json();
 }
-async function fetchMtrStations(): Promise<any> {
+async function fetchMtrStations(): Promise<GeoJSONFeatureCollection> {
   const response = await fetch("/datasets/mtr_stations_unique.geojson");
   if (!response.ok)
     throw new Error("Failed to load mtr_stations_unique.geojson");
   return await response.json();
 }
-async function fetchMtrInterchangeStations(): Promise<any> {
+async function fetchMtrInterchangeStations(): Promise<GeoJSONFeatureCollection> {
   const response = await fetch("/datasets/mtr_stations_interchange.geojson");
   if (!response.ok)
     throw new Error("Failed to load mtr_stations_interchange.geojson");
@@ -68,6 +90,7 @@ const MapPage: React.FC = () => {
     follow: isFollowMode,
     location: userLocation,
   });
+
   useEffect(() => {
     latestStateRef.current = {
       follow: isFollowMode,
@@ -92,7 +115,6 @@ const MapPage: React.FC = () => {
     } else {
       markerAnimationControls.set({ ...positioning, scale: 0.12, opacity: 1 });
       selectionFeedback();
-      console.log("haptics!!1");
       markerAnimationControls.start(
         { ...positioning, scale: 0.24 },
         { type: "spring", stiffness: 1000, damping: 15, mass: 0.5 },
@@ -173,25 +195,24 @@ const MapPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedLocation && isRequestAllowed.current) {
-      isRequestAllowed.current = false;
-      fetchAddress(selectedLocation[0], selectedLocation[1]);
-      setTimeout(() => {
-        isRequestAllowed.current = true;
-      }, 1000);
+    if (selectedLocation) {
+      const handler = setTimeout(() => {
+        fetchAddress(selectedLocation[0], selectedLocation[1]);
+      }, 500); // Debounce API calls
+      return () => clearTimeout(handler);
     }
   }, [selectedLocation, fetchAddress]);
 
   useEffect(() => {
     if (mapRef.current) {
       if (isFollowMode) {
-        mapRef.current.touchZoomRotate.disable();
+        mapRef.current.touchZoomRotate.disable(); // Disable default zoom in follow mode
         if (userLocation) {
           isProgrammaticMove.current = true;
           mapRef.current.easeTo({ center: userLocation, duration: 500 });
         }
       } else {
-        mapRef.current.touchZoomRotate.enable();
+        mapRef.current.touchZoomRotate.enable(); // Enable default zoom when not following
       }
     }
     updateCenterDisplay();
@@ -218,11 +239,11 @@ const MapPage: React.FC = () => {
       setIsMapMoving(true);
     });
     map.on("moveend", () => {
-      setIsMapMoving(false);
       if (isProgrammaticMove.current) {
         isProgrammaticMove.current = false;
         return;
       }
+      setIsMapMoving(false);
       updateCenterDisplay();
       const { follow, location } = latestStateRef.current;
       if (!follow && location) {
@@ -252,71 +273,58 @@ const MapPage: React.FC = () => {
       setIsFollowMode(false);
     });
 
-    // Custom Touch Handlers for Pinch-to-Zoom
+    // Custom Touch Handlers for Pinch-to-Zoom in Follow Mode
     const getTouchDistance = (touches: TouchList): number => {
       const touch1 = touches[0];
       const touch2 = touches[1];
-      return Math.sqrt(
-        Math.pow(touch2.clientX - touch1.clientX, 2) +
-          Math.pow(touch2.clientY - touch1.clientY, 2),
+      return Math.hypot(
+        touch2.clientX - touch1.clientX,
+        touch2.clientY - touch1.clientY,
       );
     };
 
-    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-      const touches: TouchList = e.nativeEvent.touches as TouchList;
-      if (touches.length === 2 && latestStateRef.current.follow) {
+    const handleTouchStart = (e: TouchEvent) => {
+      if (
+        e.touches.length === 2 &&
+        latestStateRef.current.follow &&
+        mapRef.current
+      ) {
         e.preventDefault();
-        map.dragPan.disable();
-        pinchStartDistanceRef.current = getTouchDistance(touches);
-        pinchStartZoomRef.current = map.getZoom();
+        mapRef.current.dragPan.disable();
+        pinchStartDistanceRef.current = getTouchDistance(e.touches);
+        pinchStartZoomRef.current = mapRef.current.getZoom();
       }
     };
 
-    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-      const touches: TouchList = e.nativeEvent.touches as TouchList;
+    const handleTouchMove = (e: TouchEvent) => {
       if (
-        touches.length === 2 &&
-        pinchStartDistanceRef.current &&
-        latestStateRef.current.follow
+        e.touches.length === 2 &&
+        pinchStartDistanceRef.current != null &&
+        pinchStartZoomRef.current != null &&
+        latestStateRef.current.follow &&
+        mapRef.current
       ) {
         e.preventDefault();
-        const currentDist = getTouchDistance(touches);
+        const currentDist = getTouchDistance(e.touches);
         const scale = currentDist / pinchStartDistanceRef.current;
-        // Check for null before using pinchStartZoomRef.current
-        if (pinchStartZoomRef.current !== null) {
-          const newZoom = pinchStartZoomRef.current + Math.log2(scale);
-          map.setZoom(newZoom);
-        }
+        const newZoom = pinchStartZoomRef.current + Math.log2(scale);
+        mapRef.current.setZoom(newZoom);
       }
     };
 
     const handleTouchEnd = () => {
-      if (pinchStartDistanceRef.current) {
+      if (pinchStartDistanceRef.current != null) {
         pinchStartDistanceRef.current = null;
         pinchStartZoomRef.current = null;
-        map.dragPan.enable();
+        mapRef.current?.dragPan.enable();
       }
     };
 
     const container = mapContainer.current;
-    if (container) {
-      container.addEventListener(
-        "touchstart",
-        handleTouchStart as unknown as EventListener,
-      );
-      container.addEventListener(
-        "touchmove",
-        handleTouchMove as unknown as EventListener,
-      );
-      container.addEventListener(
-        "touchend",
-        handleTouchEnd as unknown as EventListener,
-      );
-      container.addEventListener(
-        "touchcancel",
-        handleTouchEnd as unknown as EventListener,
-      );
-    }
+    container.addEventListener("touchstart", handleTouchStart);
+    container.addEventListener("touchmove", handleTouchMove);
+    container.addEventListener("touchend", handleTouchEnd);
+    container.addEventListener("touchcancel", handleTouchEnd);
 
     const initializeMap = async () => {
       try {
@@ -330,24 +338,28 @@ const MapPage: React.FC = () => {
         if (!isMounted || !mapRef.current) return;
         map.setStyle(style);
         map.once("styledata", () => {
+          if (!mapRef.current) return;
           map.addSource("mtr-routes", { type: "geojson", data: mtrRoutes });
           map.addSource("mtr-stations", { type: "geojson", data: mtrStations });
           map.addSource("mtr-interchange-stations", {
             type: "geojson",
             data: mtrInterchangeStations,
           });
+
           const lineColorMap: Record<string, string> = {};
-          mtrRoutes.features.forEach((f: any) => {
+          mtrRoutes.features.forEach((f) => {
             if (f.properties?.line_name && f.properties?.color) {
               lineColorMap[f.properties.line_name] = f.properties.color;
             }
           });
-          const stationColorExpression = [
+
+          const stationColorExpression: ExpressionSpecification = [
             "match",
             ["coalesce", ["at", 0, ["get", "lines"]], ["get", "lines"]],
             ...Object.entries(lineColorMap).flat(),
             "#808080",
           ];
+
           map.addLayer(
             {
               id: "mtr-routes-casing",
@@ -415,7 +427,7 @@ const MapPage: React.FC = () => {
                   22,
                   5.6,
                 ],
-                "circle-color": stationColorExpression as any,
+                "circle-color": stationColorExpression,
               },
             },
             "address_label",
@@ -523,19 +535,18 @@ const MapPage: React.FC = () => {
       setUserLocation([lng, lat]);
     };
 
-    // Helper to get geolocation from Tauri or browser
     const getUserLocation = async (): Promise<[number, number]> => {
-      // Try Tauri first
-      try {
-        // @ts-ignore
-        if (window.__TAURI__ && getCurrentPosition) {
+      if (window.__TAURI__) {
+        try {
           const pos = await getCurrentPosition();
           return [pos.coords.longitude, pos.coords.latitude];
+        } catch (e) {
+          console.warn(
+            "Could not get location via Tauri, falling back to browser API.",
+            e,
+          );
         }
-      } catch (e) {
-        // Ignore and fall back
       }
-      // Fallback to browser geolocation
       return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -553,9 +564,7 @@ const MapPage: React.FC = () => {
       .then(([lng, lat]) => {
         if (!isMounted) return;
         setupUserLocation(lng, lat);
-
-        // Watch position (browser only)
-        if (navigator.geolocation) {
+        if (navigator.geolocation && navigator.geolocation.watchPosition) {
           watchIdRef.current = navigator.geolocation.watchPosition(
             (p) => {
               const newPos: [number, number] = [
@@ -571,8 +580,7 @@ const MapPage: React.FC = () => {
         }
       })
       .catch(() => {
-        // Fallback: use default location
-        setupUserLocation(114.169525, 22.321566);
+        if (isMounted) setupUserLocation(114.169525, 22.321566);
       })
       .finally(() => {
         if (isMounted) setLoading(false);
@@ -582,27 +590,14 @@ const MapPage: React.FC = () => {
       isMounted = false;
       if (watchIdRef.current !== null)
         navigator.geolocation.clearWatch(watchIdRef.current);
-      if (container) {
-        container.removeEventListener(
-          "touchstart",
-          handleTouchStart as unknown as EventListener,
-        );
-        container.removeEventListener(
-          "touchmove",
-          handleTouchMove as unknown as EventListener,
-        );
-        container.removeEventListener(
-          "touchend",
-          handleTouchEnd as unknown as EventListener,
-        );
-        container.removeEventListener(
-          "touchcancel",
-          handleTouchEnd as unknown as EventListener,
-        );
-      }
+      // Clean up native event listeners
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
+      container.removeEventListener("touchcancel", handleTouchEnd);
       mapRef.current?.remove();
     };
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount.
 
   return (
     <div
@@ -649,7 +644,6 @@ const MapPage: React.FC = () => {
           Error loading map: {error}
         </div>
       )}
-
       {selectedLocation && (
         <div
           style={{
@@ -693,7 +687,6 @@ const MapPage: React.FC = () => {
           </div>
         </div>
       )}
-
       {userLocation && (
         <button
           onClick={() => setIsFollowMode((prev) => !prev)}
@@ -720,7 +713,6 @@ const MapPage: React.FC = () => {
           {isFollowMode ? "📍" : "🎯"}
         </button>
       )}
-
       <motion.img
         src="/Markers/MainMarker.svg"
         alt="Map center marker"
@@ -734,7 +726,6 @@ const MapPage: React.FC = () => {
         }}
         animate={markerAnimationControls}
       />
-
       <div
         ref={mapContainer}
         style={{
