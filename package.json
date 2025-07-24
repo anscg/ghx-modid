@@ -12,6 +12,7 @@
   "dependencies": {
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-geolocation": "^2.3.0",
+    "@tauri-apps/plugin-haptics": "^2.3.0",
     "@tauri-apps/plugin-opener": "^2",
     "maplibre-gl": "^5.6.1",
     "motion": "^12.23.7",

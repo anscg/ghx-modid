@@ -4,6 +4,7 @@ import { motion, useAnimationControls } from "motion/react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
+import { selectionFeedback, impactFeedback } from "@tauri-apps/plugin-haptics";
 
 let protocol = new Protocol();
 maplibregl.addProtocol("pmtiles", protocol.tile);
@@ -80,12 +81,18 @@ const MapPage: React.FC = () => {
     }
 
     if (isMapMoving) {
-      markerAnimationControls.set({ ...positioning, scale: 0.3, opacity: 0.6 });
+      markerAnimationControls.set({
+        ...positioning,
+        scale: 0.24,
+        opacity: 0.6,
+      });
     } else {
-      markerAnimationControls.set({ ...positioning, scale: 0.2, opacity: 1 });
+      markerAnimationControls.set({ ...positioning, scale: 0.12, opacity: 1 });
+      selectionFeedback();
+      console.log("haptics!!1");
       markerAnimationControls.start(
-        { ...positioning, scale: 0.3 },
-        { type: "spring", stiffness: 600, damping: 15, mass: 0.5 },
+        { ...positioning, scale: 0.24 },
+        { type: "spring", stiffness: 1000, damping: 15, mass: 0.5 },
       );
     }
   }, [isFollowMode, isMapMoving, markerAnimationControls]);
@@ -217,6 +224,7 @@ const MapPage: React.FC = () => {
           location[0],
         );
         if (distance <= 20) {
+          impactFeedback("soft");
           setIsFollowMode(true);
         }
       }
@@ -294,11 +302,39 @@ const MapPage: React.FC = () => {
       setUserLocation([lng, lat]);
     };
 
-    if (/android|iphone|ipad|ipod/i.test(navigator.userAgent)) {
-      getCurrentPosition()
-        .then((pos) => {
-          if (!isMounted) return;
-          setupUserLocation(pos.coords.longitude, pos.coords.latitude);
+    // Helper to get geolocation from Tauri or browser
+    const getUserLocation = async (): Promise<[number, number]> => {
+      // Try Tauri first
+      try {
+        // @ts-ignore
+        if (window.__TAURI__ && getCurrentPosition) {
+          const pos = await getCurrentPosition();
+          return [pos.coords.longitude, pos.coords.latitude];
+        }
+      } catch (e) {
+        // Ignore and fall back
+      }
+      // Fallback to browser geolocation
+      return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (p) => resolve([p.coords.longitude, p.coords.latitude]),
+            (err) => reject(err),
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
+          );
+        } else {
+          reject(new Error("Geolocation not supported"));
+        }
+      });
+    };
+
+    getUserLocation()
+      .then(([lng, lat]) => {
+        if (!isMounted) return;
+        setupUserLocation(lng, lat);
+
+        // Watch position (browser only)
+        if (navigator.geolocation) {
           watchIdRef.current = navigator.geolocation.watchPosition(
             (p) => {
               const newPos: [number, number] = [
@@ -311,14 +347,15 @@ const MapPage: React.FC = () => {
             (e) => console.error("Error watching position:", e),
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
           );
-        })
-        .finally(() => {
-          if (isMounted) setLoading(false);
-        });
-    } else {
-      setupUserLocation(114.169525, 22.321566);
-      setLoading(false);
-    }
+        }
+      })
+      .catch(() => {
+        // Fallback: use default location
+        setupUserLocation(114.169525, 22.321566);
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
 
     return () => {
       isMounted = false;
@@ -454,7 +491,7 @@ const MapPage: React.FC = () => {
           left: "50%",
           zIndex: 104,
           pointerEvents: "none",
-          transformOrigin: "50% calc(100% - 10px)",
+          transformOrigin: "50% calc(100% + 1px)",
         }}
         animate={markerAnimationControls}
       />
