@@ -339,11 +339,17 @@ const MapPage: React.FC = () => {
         map.setStyle(style);
         map.once("styledata", () => {
           if (!mapRef.current) return;
-          map.addSource("mtr-routes", { type: "geojson", data: mtrRoutes });
-          map.addSource("mtr-stations", { type: "geojson", data: mtrStations });
+          map.addSource("mtr-routes", {
+            type: "geojson",
+            data: mtrRoutes as FeatureCollection,
+          });
+          map.addSource("mtr-stations", {
+            type: "geojson",
+            data: mtrStations as FeatureCollection,
+          });
           map.addSource("mtr-interchange-stations", {
             type: "geojson",
-            data: mtrInterchangeStations,
+            data: mtrInterchangeStations as FeatureCollection,
           });
 
           const lineColorMap: Record<string, string> = {};
@@ -353,10 +359,11 @@ const MapPage: React.FC = () => {
             }
           });
 
+          const colorPairs = Object.entries(lineColorMap).flat();
           const stationColorExpression: ExpressionSpecification = [
             "match",
-            ["coalesce", ["at", 0, ["get", "lines"]], ["get", "lines"]],
-            ...Object.entries(lineColorMap).flat(),
+            ["get", "line_name"],
+            ...colorPairs,
             "#808080",
           ];
 
