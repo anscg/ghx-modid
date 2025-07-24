@@ -43,8 +43,11 @@ const MapPage: React.FC = () => {
   const centerMarkerRef = useRef<maplibregl.Marker | null>(null);
   const isProgrammaticMove = useRef(false);
   const watchIdRef = useRef<number | null>(null);
-  const isZooming = useRef(false);
   const isRequestAllowed = useRef(true);
+
+  // Refs for custom pinch-to-zoom
+  const pinchStartDistanceRef = useRef<number | null>(null);
+  const pinchStartZoomRef = useRef<number | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -180,9 +183,16 @@ const MapPage: React.FC = () => {
   }, [selectedLocation, fetchAddress]);
 
   useEffect(() => {
-    if (isFollowMode && userLocation && mapRef.current) {
-      isProgrammaticMove.current = true;
-      mapRef.current.easeTo({ center: userLocation, duration: 500 });
+    if (mapRef.current) {
+      if (isFollowMode) {
+        mapRef.current.touchZoomRotate.disable();
+        if (userLocation) {
+          isProgrammaticMove.current = true;
+          mapRef.current.easeTo({ center: userLocation, duration: 500 });
+        }
+      } else {
+        mapRef.current.touchZoomRotate.enable();
+      }
     }
     updateCenterDisplay();
   }, [isFollowMode, userLocation, updateCenterDisplay]);
@@ -229,12 +239,7 @@ const MapPage: React.FC = () => {
         }
       }
     });
-    map.on("zoomstart", () => {
-      isZooming.current = true;
-    });
-    map.on("zoomend", () => {
-      isZooming.current = false;
-    });
+
     map.on("dragstart", (e: maplibregl.MapTouchEvent) => {
       if (isProgrammaticMove.current) return;
       if (
@@ -246,12 +251,68 @@ const MapPage: React.FC = () => {
       }
       setIsFollowMode(false);
     });
-    map.on("move", () => {
-      const { follow, location } = latestStateRef.current;
-      if (follow && isZooming.current && location) {
-        map.setCenter(location);
+
+    // Custom Touch Handlers for Pinch-to-Zoom
+    const getTouchDistance = (touches: TouchList): number => {
+      const touch1 = touches[0];
+      const touch2 = touches[1];
+      return Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) +
+          Math.pow(touch2.clientY - touch1.clientY, 2),
+      );
+    };
+
+    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+      if (e.touches.length === 2 && latestStateRef.current.follow) {
+        e.preventDefault();
+        map.dragPan.disable();
+        pinchStartDistanceRef.current = getTouchDistance(e.touches);
+        pinchStartZoomRef.current = map.getZoom();
       }
-    });
+    };
+
+    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+      if (
+        e.touches.length === 2 &&
+        pinchStartDistanceRef.current &&
+        latestStateRef.current.follow
+      ) {
+        e.preventDefault();
+        const currentDist = getTouchDistance(e.touches);
+        const scale = currentDist / pinchStartDistanceRef.current;
+        const newZoom = pinchStartZoomRef.current + Math.log2(scale);
+        map.setZoom(newZoom);
+      }
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+      if (pinchStartDistanceRef.current) {
+        pinchStartDistanceRef.current = null;
+        pinchStartZoomRef.current = null;
+        map.dragPan.enable();
+      }
+    };
+
+    const container = mapContainer.current;
+    if (container) {
+      container.addEventListener(
+        "touchstart",
+        handleTouchStart as unknown as EventListener,
+      );
+      container.addEventListener(
+        "touchmove",
+        handleTouchMove as unknown as EventListener,
+      );
+      container.addEventListener(
+        "touchend",
+        handleTouchEnd as unknown as EventListener,
+      );
+      container.addEventListener(
+        "touchcancel",
+        handleTouchEnd as unknown as EventListener,
+      );
+    }
+
     const initializeMap = async () => {
       try {
         const [style, mtrRoutes, mtrStations, mtrInterchangeStations] =
@@ -516,6 +577,24 @@ const MapPage: React.FC = () => {
       isMounted = false;
       if (watchIdRef.current !== null)
         navigator.geolocation.clearWatch(watchIdRef.current);
+      if (container) {
+        container.removeEventListener(
+          "touchstart",
+          handleTouchStart as unknown as EventListener,
+        );
+        container.removeEventListener(
+          "touchmove",
+          handleTouchMove as unknown as EventListener,
+        );
+        container.removeEventListener(
+          "touchend",
+          handleTouchEnd as unknown as EventListener,
+        );
+        container.removeEventListener(
+          "touchcancel",
+          handleTouchEnd as unknown as EventListener,
+        );
+      }
       mapRef.current?.remove();
     };
   }, []);
