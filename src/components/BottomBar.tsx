@@ -124,8 +124,9 @@ const BottomBar: React.FC<{ followMode?: boolean }> = ({
     </BottomBarButton>
   );
 
+  // Fix: Use correct type for Framer Motion's transition property
   const springTransition = {
-    type: "spring",
+    type: "spring" as const,
     stiffness: 400,
     damping: 35,
   };
