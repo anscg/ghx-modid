@@ -68,8 +68,11 @@ const MapPage: React.FC = () => {
   >(null);
   const [isFollowMode, setIsFollowMode] = useState(true);
   const [isMapMoving, setIsMapMoving] = useState(false);
-  const [setIsGeocoding] = useState(false);
-  const [setAddressZh] = useState<string | null>(null);
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [addressZh, setAddressZh] = useState<string | null>(null);
+
+  console.log(isGeocoding);
+  console.log(addressZh);
 
   const markerAnimationControls = useAnimationControls();
 
