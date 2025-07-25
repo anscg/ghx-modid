@@ -14,6 +14,9 @@ declare global {
   interface Window {
     __TAURI__?: object;
   }
+  namespace NodeJS {
+    interface Timeout {}
+  }
 }
 
 let protocol = new Protocol();
@@ -56,6 +59,11 @@ const MapPage: React.FC = () => {
   //PITCH TO ZOOOOOM
   const pinchStartDistanceRef = useRef<number | null>(null);
   const pinchStartZoomRef = useRef<number | null>(null);
+
+  // --- ADD ---
+  // Refs for managing the request queue.
+  const isProcessingRef = useRef(false);
+  const queuedLocationRef = useRef<[number, number] | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -188,11 +196,44 @@ const MapPage: React.FC = () => {
     }
   }, []);
 
+  // --- MODIFIED ---
+  // This function now manages the entire request lifecycle, including the "waitlist".
+  const requestAddress = useCallback(
+    async (lng: number, lat: number) => {
+      // If a request is already in progress, queue the latest location and exit.
+      if (isProcessingRef.current) {
+        queuedLocationRef.current = [lng, lat];
+        return;
+      }
+
+      // Mark as processing and make the API call.
+      isProcessingRef.current = true;
+      await fetchAddress(lng, lat);
+
+      // Wait for 1 second after the request completes.
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // After the cool-down, check if a new location was queued.
+      const nextLocation = queuedLocationRef.current;
+      if (nextLocation) {
+        // If so, clear the queue and immediately process the next item.
+        queuedLocationRef.current = null;
+        requestAddress(nextLocation[0], nextLocation[1]);
+      } else {
+        // If not, we can finally stop processing.
+        isProcessingRef.current = false;
+      }
+    },
+    [fetchAddress],
+  ); // Depends on fetchAddress
+
+  // --- MODIFIED ---
+  // This useEffect now calls our new queue-managing function.
   useEffect(() => {
     if (selectedLocation) {
-      fetchAddress(selectedLocation[0], selectedLocation[1]);
+      requestAddress(selectedLocation[0], selectedLocation[1]);
     }
-  }, [selectedLocation, fetchAddress]);
+  }, [selectedLocation, requestAddress]);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -343,8 +384,6 @@ const MapPage: React.FC = () => {
             data: mtrInterchangeStations as FeatureCollection,
           });
 
-          // This mapping logic is correct for the routes, but not needed for the stations.
-          // We will leave it here as it doesn't harm anything and might be useful for other layers.
           const lineColorMap: Record<string, string> = {};
           mtrRoutes.features.forEach((f) => {
             if (f.properties?.line_name && f.properties?.color) {
@@ -419,8 +458,6 @@ const MapPage: React.FC = () => {
                   22,
                   5.6,
                 ],
-                // --- FIX ---
-                // Directly get the color from the feature's "color" property
                 "circle-color": ["get", "color"],
               },
             },
