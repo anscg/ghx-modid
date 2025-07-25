@@ -8,6 +8,9 @@ import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
 import { selectionFeedback, impactFeedback } from "@tauri-apps/plugin-haptics";
 import BottomBar from "./components/BottomBar";
 
+//a growing list of fetched address cords
+var fetchedCords: Record<string, string> = {};
+
 declare global {
   interface Window {
     __TAURI__?: object;
@@ -159,6 +162,10 @@ const MapPage: React.FC = () => {
   }, []);
 
   const fetchAddress = useCallback(async (lng: number, lat: number) => {
+    if (fetchedCords[`${lng},${lat}`]) {
+      setAddressZh(fetchedCords[`${lng},${lat}`]);
+      return;
+    }
     const userAgent = "WheelsClient/1.0 (policy@wheels.app)";
     setIsGeocoding(true);
     const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lon=${lng}&lat=${lat}&accept-language=zh-Hant`;
@@ -169,6 +176,8 @@ const MapPage: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setAddressZh(formatAddress(data.address) || "地址未找到。");
+        fetchedCords[`${lng},${lat}`] =
+          formatAddress(data.address) || "地址未找到。";
       } else {
         setAddressZh("香港");
       }
