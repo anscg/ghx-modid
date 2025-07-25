@@ -25,7 +25,7 @@ const BottomBarButton: React.FC<BottomBarButtonProps> = ({
   return (
     <motion.button
       onClick={onClick}
-      whileTap={{ scale: 0.95 }} // A uniform scale prevents icon distortion
+      whileTap={{ scale: 0.9 }} // A uniform scale prevents icon distortion
       transition={transition}
       style={{
         border: "none",

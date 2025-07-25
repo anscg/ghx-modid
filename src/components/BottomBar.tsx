@@ -197,16 +197,11 @@ const BottomBar: React.FC<{
     </BottomBarButton>
   );
 
-  // Fix: Use correct type for Framer Motion's transition property
   const springTransition = {
     type: "spring" as const,
     stiffness: 400,
-    damping: 35,
+    damping: 30,
   };
-
-  // --- The Fix ---
-  // The rest of your component code (hooks, sub-components, etc.) is perfect and remains the same.
-
   return (
     <div
       style={{

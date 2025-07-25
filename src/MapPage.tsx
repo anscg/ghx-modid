@@ -110,18 +110,24 @@ const MapPage: React.FC = () => {
   }, [isFollowMode, isMapMoving, markerAnimationControls]);
 
   function formatAddress(address: {
+    amenity?: string;
+    tourism?: string;
     building?: string;
     house_number?: string;
     road?: string;
+    residential?: string;
     suburb?: string;
     city_district?: string;
     city?: string;
   }) {
     // Only include the fields you want, and skip the street number
     const parts = [
+      address.amenity,
+      address.tourism,
       address.building,
       address.road,
       address.house_number,
+      address.residential,
       address.suburb,
       address.city_district,
       address.city,
@@ -180,10 +186,7 @@ const MapPage: React.FC = () => {
 
   useEffect(() => {
     if (selectedLocation) {
-      const handler = setTimeout(() => {
-        fetchAddress(selectedLocation[0], selectedLocation[1]);
-      }, 500); // Debounce API calls
-      return () => clearTimeout(handler);
+      fetchAddress(selectedLocation[0], selectedLocation[1]);
     }
   }, [selectedLocation, fetchAddress]);
 
