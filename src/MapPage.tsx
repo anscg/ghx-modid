@@ -8,7 +8,6 @@ import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
 import { selectionFeedback, impactFeedback } from "@tauri-apps/plugin-haptics";
 import BottomBar from "./components/BottomBar";
 
-//a growing list of fetched address cords
 var fetchedCords: Record<string, string> = {};
 
 declare global {
@@ -166,7 +165,7 @@ const MapPage: React.FC = () => {
       setAddressZh(fetchedCords[`${lng},${lat}`]);
       return;
     }
-    const userAgent = "WheelsClient/1.0 (policy@wheels.app)";
+    const userAgent = "WheelsClient/1.0 (policy@justusewheels.com)";
     setIsGeocoding(true);
     const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lon=${lng}&lat=${lat}&accept-language=zh-Hant`;
     try {
@@ -183,7 +182,7 @@ const MapPage: React.FC = () => {
       }
     } catch (error) {
       console.error("Geocoding error:", error);
-      setAddressZh("錯誤 香港");
+      setAddressZh("香港");
     } finally {
       setIsGeocoding(false);
     }
