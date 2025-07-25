@@ -69,7 +69,7 @@ const SearchBar: React.FC<{
         display: "flex",
         alignItems: "center",
         minWidth: 0,
-        justifyContent: "flex-start",
+        justifyContent: "center",
       }}
     >
       <AnimatePresence mode="wait">
@@ -83,6 +83,7 @@ const SearchBar: React.FC<{
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: `${12 * scaleFactor}px`,
               minWidth: 0,
             }}
@@ -105,8 +106,6 @@ const SearchBar: React.FC<{
                 fontWeight: 500,
                 whiteSpace: "nowrap",
                 flexShrink: 1,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
               }}
             >
               想去邊度？
