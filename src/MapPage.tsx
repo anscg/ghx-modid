@@ -6,9 +6,8 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getCurrentPosition } from "@tauri-apps/plugin-geolocation";
 import { selectionFeedback, impactFeedback } from "@tauri-apps/plugin-haptics";
-import BottomBar from "./components/BottomBar"; // <--- IMPORT THE NEW COMPONENT
+import BottomBar from "./components/BottomBar";
 
-// Augment the Window interface to include __TAURI__
 declare global {
   interface Window {
     __TAURI__?: object;
@@ -17,8 +16,6 @@ declare global {
 
 let protocol = new Protocol();
 maplibregl.addProtocol("pmtiles", protocol.tile);
-
-// Define interfaces for better type safety with fetched data
 
 async function fetchMapStyle(): Promise<any> {
   const response = await fetch("/mapstyles.json");
@@ -53,8 +50,8 @@ const MapPage: React.FC = () => {
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const isProgrammaticMove = useRef(false);
   const watchIdRef = useRef<number | null>(null);
-  //const isRequestAllowed = useRef(true);
-  // Refs for custom pinch-to-zoom
+
+  //PITCH TO ZOOOOOM
   const pinchStartDistanceRef = useRef<number | null>(null);
   const pinchStartZoomRef = useRef<number | null>(null);
 
@@ -120,7 +117,6 @@ const MapPage: React.FC = () => {
     city_district?: string;
     city?: string;
   }) {
-    // Only include the fields you want, and skip the street number
     const parts = [
       address.amenity,
       address.tourism,
@@ -174,11 +170,11 @@ const MapPage: React.FC = () => {
         const data = await response.json();
         setAddressZh(formatAddress(data.address) || "地址未找到。");
       } else {
-        setAddressZh("無法獲取地址。");
+        setAddressZh("香港");
       }
     } catch (error) {
       console.error("Geocoding error:", error);
-      setAddressZh("地理編碼失敗。");
+      setAddressZh("錯誤 香港");
     } finally {
       setIsGeocoding(false);
     }
